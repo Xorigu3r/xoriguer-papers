@@ -13,7 +13,10 @@ Tot es calcula al dispositiu: no hi ha servidor ni s'envia cap dada.
 | Factura de llum explicada: factura d'exemple amb punts clicables | ✅ v0.1 |
 | Aigua, gas, IBI | Més endavant |
 | Llegir la nòmina i la factura de llum en PDF (pdf.js, al dispositiu) | ✅ v0.1 |
-| Foto / PDF escanejat (OCR amb Tesseract.js) | Següent |
+| Foto / PDF escanejat (OCR amb Tesseract.js, al dispositiu) | ✅ v0.1 |
+| Historial mes a mes amb gràfics i avisos de canvis (al dispositiu) | ✅ v0.1 |
+| Informe per desar en PDF o compartir | ✅ v0.1 |
+| Calculadora del bo social (RD 897/2017, descomptes del 2026) | ✅ v0.1 |
 
 Per publicar-la a GitHub: [PUBLICAR.md](PUBLICAR.md).
 
@@ -43,6 +46,10 @@ npm test
 - `js/nomina/llegeix-pdf.js` i `vista-pdf.js` — llegeix la nòmina en PDF al dispositiu: busca els conceptes pel nom (català i castellà), omple el formulari i mostra què ha llegit perquè es revisi. Proves: `tests/llegeix-pdf.test.js` amb els PDF de `tests/fixtures/` (es generen amb `python scripts/genera-pdf-proves.py`).
 - `js/llum/llegeix-pdf.js`, `js/llum/vista-pdf.js` i `js/llum/exemple.js` — factura de llum en PDF (busca les fórmules «kW x dies x €/kW dia», «kWh x €/kWh», impostos...) i factura explicada. Proves: `tests/llegeix-factura.test.js`.
 - `js/pdf-text.js`, `js/pdf-ui.js` i `js/punts.js` — peces compartides: text dels PDF, bloc «Tria el PDF» i punts taronja dels documents explicats.
+- `js/ocr.js` i `vendor/tesseract/` — fotos i PDF escanejats: Tesseract.js 7 (castellà i català), es redreça la foto amb el pendent de les línies i el text passa pels mateixos lectors.
+- `js/historial.js` — historial a `localStorage`, gràfics, avisos de canvis i còpia de seguretat (JSON).
+- `js/informe.js` — informe imprimible (Desa com a PDF) i resum per compartir.
+- `js/llum/bo-social.js` i `vista-bo-social.js` — qui té dret al bo social i estalvi aproximat; dades a `data/llum-AAAA.json` → `boSocial` (revisar l'IPREM i els descomptes cada any).
 - `vendor/pdfjs/` — pdf.js 6.4.299 (build legacy, Apache-2.0), còpia local: no es carrega de cap CDN.
 - `data/index.json` — anys disponibles. L'app fa servir l'any en curs o, si encara no hi és, l'últim i ho avisa.
 - `js/nomina/model145.js` — formulari del model 145.

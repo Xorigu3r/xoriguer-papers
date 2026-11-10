@@ -15,7 +15,8 @@ export function numLlum(s) {
 
 const N = String.raw`(\d+(?:[.,]\d+)*)`;
 const X = String.raw`\s*[x×*]\s*`;
-const EUR = String.raw`\s*(?:€|eur(?:os?)?)?\s*\/?\s*`;
+// (l'OCR de vegades llegeix «€» com «E» o «C»)
+const EUR = String.raw`\s*(?:€|eur(?:os?)?|e|c)?\s*\/?\s*`;
 const UNITAT = String.raw`\s*(?:y\s*|i\s*|\/\s*|·\s*|-\s*|x\s*)?(dia|any|ano|mes)`;
 const RE = {
   // 4,6 kW x 31 días x 0,098 €/kW día
@@ -25,7 +26,8 @@ const RE = {
   // 3,45 kW x 23,324952 €/kW año x (30/365) días
   potAny: new RegExp(`${N}\\s*kw${X}${N}${EUR}kw${UNITAT}${X}\\(?\\s*${N}\\s*\\/\\s*(\\d{3})\\s*\\)?`),
   // 62 kWh x 0,22 €/kWh
-  energia: new RegExp(`(-?)${N}\\s*kwh${X}${N}${EUR}kwh`),
+  // (el «kWh» del consum és opcional: l'OCR de vegades el perd; la unitat del preu sí que hi ha de ser)
+  energia: new RegExp(`(-?)${N}\\s*(?:kwh)?${X}${N}${EUR}kwh`),
   // 31 días x 0,019 €/día
   dies: new RegExp(`${N}\\s*(?:dies|dias|dia)${X}${N}${EUR}(dia|mes)`),
   pct: new RegExp(`${N}\\s*%`),
@@ -266,6 +268,11 @@ const t_any = (u) => ({ dia: 'dia', mes: 'mes', any: 'any', ano: 'any' }[u] ?? u
 export async function llegeixFacturaPdf(bytes, contrasenya) {
   const { items, pagines } = await textDelPdf(bytes, contrasenya);
   if (items.length < 5) throw new ErrorPdf('sense-text');
-  const linies = agrupaLinies(items).map((l) => l.text);
-  return { ...interpretaFactura(linies), linies, pagines };
+  return { ...facturaDeItems(items), pagines };
+}
+
+/** Trossos de text amb posició (del PDF o de l'OCR) → lectura de la factura. */
+export function facturaDeItems(items, tolerancia) {
+  const linies = agrupaLinies(items, tolerancia).map((l) => l.text);
+  return { ...interpretaFactura(linies), linies };
 }

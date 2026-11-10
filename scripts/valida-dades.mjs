@@ -115,6 +115,19 @@ for (const f of fitxersLlum) {
     if (i > 0 && dia(p.des) - dia(pf[i - 1].fins) !== 864e5) err(f, `periodesFiscals[${i}] no comença l'endemà de l'anterior`);
   });
   if (pf.length && (pf[0].des !== `${any}-01-01` || pf.at(-1).fins !== `${any}-12-31`)) err(f, 'els periodesFiscals han de cobrir de l\'1 de gener al 31 de desembre');
+  // Bo social
+  const bs = d.boSocial;
+  if (!bs) err(f, 'falta "boSocial"');
+  else {
+    enRang(f, 'boSocial.iprem14', bs.iprem14, 6000, 15000);
+    enRang(f, 'boSocial.multiplicador.base', bs.multiplicador?.base, 1, 3);
+    for (const k of ['adultAddicional', 'menor', 'circumstanciaEspecial']) enRang(f, `boSocial.multiplicador.${k}`, bs.multiplicador?.[k], 0, 2);
+    enRang(f, 'boSocial.severPartDelLlindar', bs.severPartDelLlindar, 0.2, 1);
+    for (const k of ['vulnerable', 'sever']) enRang(f, `boSocial.descompteOrdinari.${k}`, bs.descompteOrdinari?.[k], 10, 100);
+    (bs.descomptes ?? []).forEach((x, i) => { enRang(f, `boSocial.descomptes[${i}].vulnerable`, x.vulnerable, 10, 100); enRang(f, `boSocial.descomptes[${i}].sever`, x.sever, x.vulnerable, 100); });
+    const lk = Object.values(bs.limitsKWh ?? {});
+    if (lk.length !== 4 || lk.some((v, i) => i && v <= lk[i - 1])) err(f, 'boSocial.limitsKWh ha de tenir 4 límits creixents');
+  }
   const pot = d.potenciesNormalitzades ?? [];
   if (pot.length < 3 || pot.some((v, i) => i && v <= pot[i - 1])) err(f, 'potenciesNormalitzades ha de ser una llista creixent');
 }

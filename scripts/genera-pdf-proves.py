@@ -194,8 +194,82 @@ def factures():
     ], 'Comercializadora de Referencia Prueba, SA')
 
 
+def foto(nom, files, font='arial.ttf', mida=34, gir=1.2):
+    """«Foto» d'un document (text dibuixat, una mica girat i borrós) per provar l'OCR."""
+    from PIL import Image, ImageDraw, ImageFont, ImageFilter
+    import random
+    random.seed(7)
+    try:
+        f = ImageFont.truetype(font, mida)
+        fb = ImageFont.truetype(font.replace('.ttf', 'bd.ttf'), mida)
+    except OSError:
+        f = fb = ImageFont.load_default()
+    W, H = 1700, 60 + len(files) * int(mida * 1.6) + 60
+    img = Image.new('L', (W, H), 235)
+    d = ImageDraw.Draw(img)
+    y = 60
+    for fila in files:
+        if fila:
+            esq, dre = (fila, '') if isinstance(fila, str) else (fila[0], fila[1] if len(fila) > 1 else '')
+            d.text((70, y), esq, fill=25, font=fb if isinstance(fila, str) else f)
+            if dre:
+                d.text((W - 70 - d.textlength(dre, font=f), y), dre, fill=25, font=f)
+        y += int(mida * 1.6)
+    img = img.rotate(gir, expand=True, fillcolor=200).filter(ImageFilter.GaussianBlur(0.8))
+    img = img.point(lambda v: max(0, min(255, v + random.randint(-12, 12))))
+    img.convert('RGB').save(DIR / nom, quality=82)
+    return img
+
+
+def fotos():
+    nomina = [
+        'NÓMINA - AGOSTO 2018',
+        ('Grupo de cotización: 7',),
+        None,
+        ('30  SALARIO BASE', '783,74'),
+        ('30  COMP. DEDICACION', '105,70'),
+        ('30  MEJ VOLUNTARIA', '398,70'),
+        ('30  P. NO COMPETENCIA', '90,00'),
+        ('30  P.P.Paga Extra', '130,62'),
+        ('4,70  Cont.Comunes', '70,91'),
+        ('1,55  Desempleo', '23,39'),
+        ('0,10  For.Profesional', '1,51'),
+        ('10,80  I.R.P.F.', '162,95'),
+        None,
+        ('Total Devengado', '1.508,76'),
+        ('Total Deducir', '258,76'),
+        ('LIQUIDO A PERCIBIR', '1.250,00'),
+    ]
+    nomina = [x if x is not None else '' for x in nomina]
+    foto('nomina-foto.jpg', nomina)
+    factura = [
+        'FACTURA DE ELECTRICIDAD',
+        ('Periodo de facturación: del 01/10/2026 al 31/10/2026',),
+        ('Potencia P1 punta: 4,6 kW x 31 días x 0,098000 €/kW día', '13,97 €'),
+        ('Potencia P2 valle: 4,6 kW x 31 días x 0,012000 €/kW día', '1,71 €'),
+        ('Energía P1 punta: 62 kWh x 0,220000 €/kWh', '13,64 €'),
+        ('Energía P2 llano: 75 kWh x 0,150000 €/kWh', '11,25 €'),
+        ('Energía P3 valle: 133 kWh x 0,090000 €/kWh', '11,97 €'),
+        ('Financiación bono social: 31 días x 0,019000 €/día', '0,59 €'),
+        ('Impuesto electricidad 5,11269632 % s/ 53,13 €', '2,72 €'),
+        ('Alquiler contador: 31 días x 0,026630 €/día', '0,83 €'),
+        ('IVA 21 % s/ 56,68 €', '11,90 €'),
+        ('TOTAL FACTURA', '68,58 €'),
+    ]
+    foto('factura-foto.jpg', factura, mida=30)
+    # PDF escanejat de veritat: només una imatge, sense text
+    from reportlab.lib.utils import ImageReader
+    c = canvas.Canvas(str(DIR / 'nomina-escanejada-llegible.pdf'), pagesize=A4)
+    im = ImageReader(str(DIR / 'nomina-foto.jpg'))
+    w, h = im.getSize()
+    alt = 535 * h / w
+    c.drawImage(im, 30, H - 40 - alt, width=535, height=alt)
+    c.save()
+
+
 columna('nomina-columna.pdf')
 factures()
+fotos()
 dues_columnes()
 escanejada()
 columna('nomina-contrasenya.pdf', encrypt=StandardEncryption('1234', canPrint=1))

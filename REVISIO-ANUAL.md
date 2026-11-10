@@ -50,3 +50,9 @@ Fins que surt l'ordre de cotització, molts anys es fan servir provisionalment l
 - Mira la secció I del BOE (disposicions generals), els peatges de la CNMC a la secció III i la pàgina de retencions de l'AEAT.
 - Desa el que ja ha vist a `scripts/estat-vigilancia.json` perquè no avisi dues vegades.
 - També avisa si comença un any i no hi ha `data/nomina-AAAA.json` o `data/llum-AAAA.json`.
+
+## Bo social (data/llum-AAAA.json → boSocial)
+
+- **IPREM de 14 pagues** (`iprem14`): surt a la Llei de pressupostos (o es prorroga). El 2026 s'ha fet servir 8.400 € (600 €/mes), el mateix que fa servir el MITECO per als llindars.
+- **Descomptes** (`descomptes`): els del 2026 (42,5 % i 57,5 %) són extraordinaris del RDL 7/2026 i s'acaben el 31/12/2026. Si no hi ha pròrroga, el 2027 tornen el 35 % i el 50 % (`descompteOrdinari`). Mira si cap reial decret llei nou els allarga.
+- **Llindars i límits de kWh**: art. 3 i annex I del RD 897/2017 (BOE-A-2017-11505, text consolidat).

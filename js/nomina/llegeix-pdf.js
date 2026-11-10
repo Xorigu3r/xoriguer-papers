@@ -31,7 +31,8 @@ const CONCEPTES = [
   { clau: 'fp', re: /formaci\w*\s*prof|for\.?\s*prof|f\.\s*prof/ },
   { clau: 'mei', re: /\bm\.?e\.?i\b|equidad|equitat/ },
   { clau: 'heSS', re: /cotiz\w*\s*(adicional\s*)?hor|cotitz\w*\s*(addicional\s*)?hor|hor\w*\s*extra\w*\s*(fuerza|forca|estruct)/ },
-  { clau: 'irpf', re: /i\.?\s*r\.?\s*p\.?\s*f|retenci/ },
+  // (l'OCR de vegades llegeix «I.R.P.F.» com «LR.P.F.» o «1.R.P.F.»)
+  { clau: 'irpf', re: /\b[il1|]\.?\s*r\.?\s*p\.?\s*f|retenci/ },
   { clau: 'prorrata', re: /p\.?\s*p\.?\s*(de\s*)?pag|prorr?at|parte\s*prop|part\s*prop/ },
   { clau: 'pagaExtra', re: /paga\s*extra|gratificaci|paga\s*(de\s*)?(junio|juny|navidad|nadal|verano|estiu|beneficios|beneficis|marzo|marc)/ },
   { clau: 'horesExtres', re: /hor\w*\s*extra/ },
@@ -219,6 +220,11 @@ export function interpretaNomina(linies) {
 export async function llegeixNominaPdf(bytes, contrasenya) {
   const { items, pagines } = await textDelPdf(bytes, contrasenya);
   if (items.length < 5) throw new ErrorPdf('sense-text');
-  const linies = agrupaLinies(items);
-  return { ...interpretaNomina(linies), linies: linies.map((l) => l.text), pagines };
+  return { ...nominaDeItems(items), pagines };
+}
+
+/** Trossos de text amb posició (del PDF o de l'OCR) → lectura de la nòmina. */
+export function nominaDeItems(items, tolerancia) {
+  const linies = agrupaLinies(items, tolerancia);
+  return { ...interpretaNomina(linies), linies: linies.map((l) => l.text) };
 }

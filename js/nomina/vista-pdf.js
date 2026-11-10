@@ -1,6 +1,6 @@
 // Bloc «Tens la nòmina en PDF?» de la pantalla Comprovar nòmina: tria el fitxer, el llegeix
 // al dispositiu i mostra què s'ha trobat perquè es revisi abans de fiar-se del càlcul.
-import { llegeixNominaPdf } from './llegeix-pdf.js';
+import { llegeixNominaPdf, nominaDeItems } from './llegeix-pdf.js';
 import { fmt } from './calc.js';
 import { t } from '../i18n.js';
 import { seccioPdf as seccioPdfComu, enllacaPdf as enllacaPdfComu } from '../pdf-ui.js';
@@ -22,7 +22,7 @@ const NOMS = () => ({
 export function seccioPdf() {
   return seccioPdfComu(t('Tens la nòmina en PDF?'), t("Tria el fitxer i l'app n'omplirà les xifres. El PDF es llegeix al teu dispositiu: no s'envia enlloc."));
 }
-export const enllacaPdf = (el, aplica) => enllacaPdfComu(el, llegeixNominaPdf, aplica);
+export const enllacaPdf = (el, aplica) => enllacaPdfComu(el, { pdf: llegeixNominaPdf, items: nominaDeItems }, aplica);
 
 /** Resum del que s'ha llegit, amb comprovacions dels percentatges oficials. */
 export function resumLectura(l, dades) {
@@ -56,6 +56,7 @@ export function resumLectura(l, dades) {
     <section class="lectura-pdf">
       <h2>${t('He llegit «{nom}»', { nom: esc(l.nom) })}</h2>
       <p class="petit">${t("He omplert el formulari amb aquestes xifres. Revisa que siguin les de la teva nòmina: cada empresa fa la nòmina d'una manera i em puc equivocar.")}</p>
+      ${l.ocr ? `<div class="avis alerta">${t("L'he llegit d'una foto: revisa bé cada xifra, sobretot les comes i els decimals.")}</div>` : ''}
       <table class="taula compacta"><tbody>${files}</tbody></table>
       ${avisos.map(([n, text]) => `<div class="avis ${n}">${text}</div>`).join('')}
       <p class="petit">${t("El PDF no diu la teva situació familiar (model 145) ni sempre la jornada: si el percentatge d'IRPF surt a la nòmina, el càlcul ja el fa servir.")}</p>

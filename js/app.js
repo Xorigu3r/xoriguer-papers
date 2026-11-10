@@ -1,5 +1,8 @@
 import { vistaInici, vistaNomina, vistaSimular, vistaGlossari } from './nomina/vistes.js';
 import { vistaNominaExemple } from './nomina/exemple.js';
+import { vistaHistorial } from './historial.js';
+import { vistaInforme } from './informe.js';
+import { vistaBoSocial } from './llum/vista-bo-social.js';
 import { vistaFacturaExemple } from './llum/exemple.js';
 import { vistaLlum, vistaSimularLlum } from './llum/vistes.js';
 import { t, idioma, canviaIdioma, locale } from './i18n.js';
@@ -60,6 +63,10 @@ const rutes = {
   '/llum': vistaLlum,
   '/llum/simular': vistaSimularLlum,
   '/llum/exemple': vistaFacturaExemple,
+  '/llum/bo-social': vistaBoSocial,
+  '/historial': vistaHistorial,
+  '/informe/nomina': (el, d, tot) => vistaInforme(el, 'nomina', tot),
+  '/informe/llum': (el, d, tot) => vistaInforme(el, 'llum', tot),
 };
 const esLlum = (ruta) => ruta.startsWith('/llum');
 
@@ -72,7 +79,7 @@ function navega() {
     vista.innerHTML = `<div class="avis alerta">${t("No s'han pogut carregar les dades de la factura de llum.")}</div>`;
     return;
   }
-  fn(vista, esLlum(ruta) ? dadesLlum : dades);
+  fn(vista, esLlum(ruta) ? dadesLlum : dades, { dades, dadesLlum });
   vista.focus({ preventScroll: true });
   window.scrollTo(0, 0);
 }

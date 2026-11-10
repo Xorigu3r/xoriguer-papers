@@ -1,5 +1,5 @@
 // Service worker: l'app funciona sense connexió. Canvia VERSIO quan publiquis canvis.
-const VERSIO = 'pdc-v13';
+const VERSIO = 'pdc-v14';
 const FITXERS = [
   './',
   'index.html',
@@ -24,6 +24,11 @@ const FITXERS = [
   'js/pdf-text.js',
   'js/pdf-ui.js',
   'js/punts.js',
+  'js/historial.js',
+  'js/informe.js',
+  'js/ocr.js',
+  'js/llum/bo-social.js',
+  'js/llum/vista-bo-social.js',
   'data/index.json',
   'data/nomina-2026.json',
   'data/llum-2026.json',

@@ -354,3 +354,65 @@ details.linia p { margin: .35rem 0 .2rem; font-size: .85rem; color: var(--text-s
 .fp-sel { outline: 2px solid #1d1d1f; }
 .fp-peu { border-top: 1px solid #c8d6dc; padding-top: .5rem; font-size: .74rem; color: #333; }
 .fp-peu p { display: flex; align-items: center; gap: .4rem; margin: .25rem 0; }
+
+/* ---------- Historial ---------- */
+.peu-resultat { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--vora); }
+.desa-historial { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.desa-historial label { font-size: .9rem; }
+.desa-historial input { padding: .45rem .6rem; border-radius: 8px; border: 1px solid var(--vora); background: var(--fons); color: var(--text); font: inherit; color-scheme: dark; }
+.seccio-historial { margin: 1.5rem 0 2rem; }
+.seccio-historial h2 { margin-bottom: .6rem; }
+.accions-historial { display: flex; flex-wrap: wrap; gap: .5rem; }
+.accions-historial label.boto { cursor: pointer; }
+.grafic { margin: 1rem 0; padding: .9rem 1rem .5rem; background: var(--superficie); border: 1px solid var(--vora); border-radius: var(--radi); }
+.grafic figcaption { font-weight: 600; margin-bottom: .4rem; }
+.grafic svg { width: 100%; height: auto; display: block; overflow: visible; }
+.g-grid { stroke: var(--vora); stroke-width: 1; }
+.g-eix { fill: var(--text-suau); font-size: 11px; font-family: inherit; }
+.g-zona { fill: transparent; }
+.g-marca { fill: color-mix(in srgb, var(--primari) 55%, var(--superficie)); }
+.g-marca.g-ultima { fill: var(--primari); }
+.g-barra:hover .g-marca, .g-barra:focus .g-marca { fill: var(--primari-fort); }
+.g-barra:hover .g-zona, .g-barra:focus .g-zona { fill: rgb(255 255 255 / .04); }
+.g-barra:focus { outline: none; }
+.grafic .petit { margin: .3rem 0 0; }
+
+/* ---------- Informe (PDF / imprimir) ---------- */
+.accions-informe { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: 1rem; }
+.accions-informe .petit { flex-basis: 100%; margin: 0; }
+.informe { background: #fff; color: #1d1d1f; padding: 1.5rem 1.6rem; border-radius: 6px; max-width: 46rem; box-shadow: var(--ombra); }
+.informe h2 { font-size: 1rem; margin: 1.2rem 0 .4rem; color: #1d1d1f; border-bottom: 2px solid var(--primari); padding-bottom: .2rem; }
+.informe-cap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.informe-cap div { display: flex; flex-direction: column; }
+.informe-cap strong { font-size: 1.3rem; }
+.informe-cap span { color: #555; font-size: .85rem; }
+.informe .taula { background: #fff; border-color: #ddd; color: #1d1d1f; }
+.informe .taula td { border-color: #e5e5e5; }
+.informe .taula .detall { color: #666; }
+.informe .taula tr.gran td { color: #c25400; }
+.informe .taula tr.alerta td { color: #b3261e; }
+.informe-avisos { padding-left: 1.1rem; margin: 0; font-size: .9rem; }
+.informe-avisos li { margin: .3rem 0; }
+.informe-avisos li.alerta::marker { content: "⚠ "; }
+.informe-fonts { padding-left: 1.1rem; font-size: .8rem; color: #444; }
+.informe-peu { margin-top: 1.2rem; padding-top: .6rem; border-top: 1px solid #ddd; font-size: .78rem; color: #555; }
+@media print {
+  @page { size: A4; margin: 14mm; }
+  body { background: #fff !important; color: #000; }
+  .barra, .menu, .peu, .no-imprimir, .avis-global, .resum-mobil, .lectura-pdf, .llegir-pdf { display: none !important; }
+  .informe { box-shadow: none; padding: 0; max-width: none; }
+  .informe .taula { font-size: .82rem; }
+  main, #vista { padding: 0 !important; margin: 0 !important; }
+}
+.botons-pdf { display: flex; flex-wrap: wrap; gap: .5rem; margin: .4rem 0; }
+.botons-pdf label { cursor: pointer; }
+.llegir-pdf:focus-within .botons-pdf label.boto { outline: none; }
+.llegir-pdf input:focus-visible + label, .botons-pdf input:focus-visible ~ label { outline: 2px solid var(--primari); outline-offset: 2px; }
+
+/* ---------- Bo social ---------- */
+.sense-dret { background: none !important; -webkit-background-clip: initial !important; background-clip: initial !important; color: var(--text) !important; font-size: 1.6rem !important; }
+.gran-estalvi { font-size: 1.2rem; margin: .2rem 0 .6rem; }
+.gran-estalvi strong { color: var(--primari); font-size: 1.6rem; }
+.passos { padding-left: 1.2rem; }
+.passos li { margin: .4rem 0; }
+.sagnat { margin: -.2rem 0 .5rem 1.7rem; }

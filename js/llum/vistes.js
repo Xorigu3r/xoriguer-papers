@@ -3,6 +3,7 @@ import { calculaFactura, aplicaSimulacio, diesEntre, PERIODES_ENERGIA } from './
 import { explicacions as expl } from './textos.js';
 import { fmt } from '../nomina/calc.js';
 import { t } from '../i18n.js';
+import { peuResultat, resumLlum } from '../historial.js';
 import { seccioPdf, enllacaPdf, resumLectura, CAMPS_PDF } from './vista-pdf.js';
 
 const CLAU = 'pdc.llum.v1';
@@ -25,6 +26,7 @@ const EXEMPLE = {
 
 const llegeixDesat = () => { try { const v = localStorage.getItem(CLAU); return v ? JSON.parse(v) : null; } catch { return null; } };
 let estat = { ...PER_DEFECTE, ...(llegeixDesat() ?? {}) };
+export const estatLlum = () => estat;
 let lectura = null; // última factura llegida d'un PDF (només en memòria)
 function desa() {
   try { if (estat.recordar) localStorage.setItem(CLAU, JSON.stringify(estat)); else localStorage.removeItem(CLAU); } catch { /* res */ }
@@ -52,7 +54,7 @@ export function vistaLlum(el, dades) {
   const x = expl();
   el.append(h(`
     <h1>${t('Comprovar la factura de llum')}</h1>
-    <p class="intro">${t('Per a la tarifa domèstica 2.0TD (fins a 15 kW). Copia les xifres de la teva factura: el resultat s\'actualitza mentre escrius.')} <a href="#/llum/simular">${t('Simular canvis')} →</a> · <a href="#/llum/exemple">${t('No saps on és cada cosa? Mira la factura explicada.')}</a></p>
+    <p class="intro">${t('Per a la tarifa domèstica 2.0TD (fins a 15 kW). Copia les xifres de la teva factura: el resultat s\'actualitza mentre escrius.')} <a href="#/llum/simular">${t('Simular canvis')} →</a> · <a href="#/llum/exemple">${t('No saps on és cada cosa? Mira la factura explicada.')}</a> · <a href="#/llum/bo-social">${t('Tinc dret al bo social?')}</a></p>
     ${lectura ? resumLectura(lectura) : seccioPdf()}
     <div class="dues-columnes">
       <form id="form-llum" class="formulari" autocomplete="off" onsubmit="return false">
@@ -260,6 +262,7 @@ function pintaResultat(sortida, dades) {
       ${t("Si tens el PVPC, el preu de l'energia canvia cada hora; aquí pots posar el preu mitjà que surt a la factura.")}</p>
     </details>
   `;
+  peuResultat(sortida, 'llum', { ...estat }, resumLlum(r), /^\d{4}-\d{2}/.test(estat.dataFi) ? estat.dataFi.slice(0, 7) : undefined);
 }
 
 // ---------- Simulador ----------

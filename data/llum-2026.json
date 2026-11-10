@@ -3,27 +3,62 @@
   "revisat": "2026-11-10",
   "tarifa": "2.0TD",
   "fonts": [
-    { "nom": "Resolució CNMC de 18/12/2025: peatges de transport i distribució 2026, BOE-A-2025-26348", "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26348" },
-    { "nom": "Orden TED/1524/2025: càrrecs del sistema elèctric 2026, BOE-A-2025-26705", "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26705" },
-    { "nom": "Llei 38/1992 d'impostos especials, art. 99 (impost elèctric), BOE-A-1992-28741", "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1992-28741" },
-    { "nom": "Real Decreto-ley 7/2026 (IVA 10 % i impost elèctric 0,5 %), BOE-A-2026-6544", "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2026-6544" },
-    { "nom": "Real Decreto-ley 18/2026 (la rebaixa no es va aplicar al juny), BOE-A-2026-14112", "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2026-14112" },
-    { "nom": "Real Decreto-ley 25/2026 (rebaixa condicionada a l'IPC per a novembre i desembre), BOE-A-2026-20265", "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2026-20265" },
-    { "nom": "Lloguer del comptador: Orden ITC/3860/2007 i Orden IET/1491/2013", "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2007-22458" }
+    {
+      "nom": "Resolució CNMC de 18/12/2025: peatges de transport i distribució 2026, BOE-A-2025-26348",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26348"
+    },
+    {
+      "nom": "Orden TED/1524/2025: càrrecs del sistema elèctric 2026, BOE-A-2025-26705",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26705"
+    },
+    {
+      "nom": "Llei 38/1992 d'impostos especials, art. 99 (impost elèctric), BOE-A-1992-28741",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1992-28741"
+    },
+    {
+      "nom": "Real Decreto-ley 7/2026 (IVA 10 % i impost elèctric 0,5 %), BOE-A-2026-6544",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2026-6544"
+    },
+    {
+      "nom": "Real Decreto-ley 18/2026 (la rebaixa no es va aplicar al juny), BOE-A-2026-14112",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2026-14112"
+    },
+    {
+      "nom": "Real Decreto-ley 25/2026 (rebaixa condicionada a l'IPC per a novembre i desembre), BOE-A-2026-20265",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2026-20265"
+    },
+    {
+      "nom": "Lloguer del comptador: Orden ITC/3860/2007 i Orden IET/1491/2013",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2007-22458"
+    }
   ],
   "diesAny": 365,
   "peatges": {
-    "potencia": { "P1": 23.324952, "P2": 0.443770 },
-    "energia": { "P1": 0.033261, "P2": 0.016409, "P3": 0.000077 },
+    "potencia": {
+      "P1": 23.324952,
+      "P2": 0.44377
+    },
+    "energia": {
+      "P1": 0.033261,
+      "P2": 0.016409,
+      "P3": 7.7e-05
+    },
     "unitats": "potència en €/kW i any; energia en €/kWh"
   },
   "carrecs": {
-    "potencia": { "P1": 4.379461, "P2": 0.281653 },
-    "energia": { "P1": 0.064292, "P2": 0.012858, "P3": 0.003215 },
+    "potencia": {
+      "P1": 4.379461,
+      "P2": 0.281653
+    },
+    "energia": {
+      "P1": 0.064292,
+      "P2": 0.012858,
+      "P3": 0.003215
+    },
     "unitats": "potència en €/kW i any; energia en €/kWh (segment tarifari 1 = 2.0TD)"
   },
   "lloguerComptador": {
-    "monofasicEurDia": 0.026630,
+    "monofasicEurDia": 0.02663,
     "nota": "Comptador monofàsic amb telegestió, en lloguer: 0,81 €/mes. Si el comptador és teu, no en pagues."
   },
   "impostElectric": {
@@ -31,11 +66,28 @@
     "nota": "Mínim per a usos domèstics (\"altres usos\", art. 99.2 Llei 38/1992): 1 €/MWh."
   },
   "periodesFiscals": [
-    { "des": "2026-01-01", "fins": "2026-03-21", "iva": 21, "impostElectric": 5.11269632 },
-    { "des": "2026-03-22", "fins": "2026-05-31", "iva": 21, "ivaReduit": 10, "potenciaMaxIvaReduit": 10, "impostElectric": 0.5,
-      "nota": "RDL 7/2026: IVA del 10 % si tens 10 kW o menys contractats (o bo social vulnerable sever), i impost elèctric del 0,5 %. No es va aplicar al juny (RDL 18/2026)." },
-    { "des": "2026-06-01", "fins": "2026-12-31", "iva": 21, "impostElectric": 5.11269632,
-      "nota": "El RDL 25/2026 preveu un IVA del 10 % i un impost elèctric del 0,5 % al novembre o desembre només si l'IPC de l'electricitat puja més d'un 15 %. No consta que s'hagi activat: si la teva factura ho aplica, canvia els percentatges a mà." }
+    {
+      "des": "2026-01-01",
+      "fins": "2026-03-21",
+      "iva": 21,
+      "impostElectric": 5.11269632
+    },
+    {
+      "des": "2026-03-22",
+      "fins": "2026-05-31",
+      "iva": 21,
+      "ivaReduit": 10,
+      "potenciaMaxIvaReduit": 10,
+      "impostElectric": 0.5,
+      "nota": "RDL 7/2026: IVA del 10 % si tens 10 kW o menys contractats (o bo social vulnerable sever), i impost elèctric del 0,5 %. No es va aplicar al juny (RDL 18/2026)."
+    },
+    {
+      "des": "2026-06-01",
+      "fins": "2026-12-31",
+      "iva": 21,
+      "impostElectric": 5.11269632,
+      "nota": "El RDL 25/2026 preveu un IVA del 10 % i un impost elèctric del 0,5 % al novembre o desembre només si l'IPC de l'electricitat puja més d'un 15 %. No consta que s'hagi activat: si la teva factura ho aplica, canvia els percentatges a mà."
+    }
   ],
   "periodesHoraris": {
     "energia": {
@@ -48,5 +100,66 @@
       "P2": "Vall: de 0 a 8 h, i caps de setmana i festius tot el dia"
     }
   },
-  "potenciesNormalitzades": [2.3, 3.45, 4.6, 5.75, 6.9, 8.05, 9.2, 10.35, 11.5, 14.49]
+  "potenciesNormalitzades": [
+    2.3,
+    3.45,
+    4.6,
+    5.75,
+    6.9,
+    8.05,
+    9.2,
+    10.35,
+    11.5,
+    14.49
+  ],
+  "boSocial": {
+    "nota": "Bo social elèctric (RD 897/2017). IPREM de 14 pagues; percentatges extraordinaris del 2026 segons el RDL 7/2026.",
+    "fonts": [
+      {
+        "nom": "Real Decreto 897/2017 (bo social), text consolidat, BOE-A-2017-11505",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2017-11505"
+      },
+      {
+        "nom": "Real Decreto-ley 7/2026, art. 1 (descomptes del 2026), BOE-A-2026-6544",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2026-6544"
+      },
+      {
+        "nom": "MITECO: preguntes freqüents del bo social",
+        "url": "https://www.miteco.gob.es/gl/energia/pobreza-energetica/pe-001/preguntas-frecuentes-bono-social.html"
+      }
+    ],
+    "iprem14": 8400,
+    "ipremNota": "IPREM anual de 14 pagues (600 €/mes). És el que fa servir el MITECO per als llindars (1,5 × IPREM = 12.600 €).",
+    "multiplicador": {
+      "base": 1.5,
+      "adultAddicional": 0.3,
+      "menor": 0.5,
+      "circumstanciaEspecial": 1
+    },
+    "severPartDelLlindar": 0.5,
+    "pensionistesSever": 1,
+    "familiaNombrosaSever": 2,
+    "pensionistesAltresIngressosMax": 500,
+    "potenciaMaxKW": 10,
+    "descomptes": [
+      {
+        "des": "2026-01-01",
+        "fins": "2026-12-31",
+        "vulnerable": 42.5,
+        "sever": 57.5,
+        "font": "RDL 7/2026"
+      }
+    ],
+    "descompteOrdinari": {
+      "vulnerable": 35,
+      "sever": 50
+    },
+    "limitsKWh": {
+      "fins2persones": 1587,
+      "tresPersones": 2222,
+      "quatrePersones": 2698,
+      "cincOMes": 4761
+    },
+    "margeComercialitzacioPVPC": 3.113
+  }
 }

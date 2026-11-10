@@ -3,6 +3,7 @@ import { seccioModel145, llegeixLlistes145, enllacaModel145 } from './model145.j
 import { explicacions as expl, glossari as gloss } from './textos.js';
 import { glossari as glossLlum } from '../llum/textos.js';
 import { t } from '../i18n.js';
+import { peuResultat, resumNomina } from '../historial.js';
 import { seccioPdf, enllacaPdf, resumLectura, CAMPS_PDF } from './vista-pdf.js';
 
 // ---------- Estat del formulari (memòria; opcionalment al dispositiu) ----------
@@ -21,6 +22,7 @@ function llegeixDesat() {
   try { const v = localStorage.getItem(CLAU); return v ? JSON.parse(v) : null; } catch { return null; }
 }
 let estat = { ...PER_DEFECTE, ...(llegeixDesat() ?? {}) };
+export const estatNomina = () => estat;
 let lectura = null; // última nòmina llegida d'un PDF (només en memòria)
 
 function desa() {
@@ -70,6 +72,16 @@ export function vistaInici(el) {
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5h15l6 6v24H10z"/><path d="M19 13l-3 6h5l-3 6" stroke="#f5efe6"/><circle cx="29" cy="29" r="5" fill="#ff8a1f" stroke="none"/></svg>
         <h2>${t('Factura explicada')} <span class="etiqueta">${t('Nou')}</span></h2>
         <p>${t("Una factura de llum d'exemple amb punts: toca cada apartat i et diu què és.")}</p>
+      </a>
+      <a class="targeta" href="#/llum/bo-social">
+        <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 34s-12-7-12-16a7 7 0 0 1 12-5 7 7 0 0 1 12 5c0 9-12 16-12 16z"/><path d="M17 19h6M20 16v6" stroke="#f5efe6"/></svg>
+        <h2>${t('Bo social')} <span class="etiqueta">${t('Nou')}</span></h2>
+        <p>${t("Descobreix si tens dret al descompte de la llum per a llars vulnerables i quant t'estalviaries.")}</p>
+      </a>
+      <a class="targeta" href="#/historial">
+        <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 33h26"/><path d="M11 33V21M18 33V14M25 33V18M32 33V9" stroke="#f5efe6"/></svg>
+        <h2>${t('Historial')} <span class="etiqueta">${t('Nou')}</span></h2>
+        <p>${t("Desa les nòmines i factures de cada mes i mira com evolucionen. Et diu si la llum puja o si t'han canviat l'IRPF.")}</p>
       </a>
       <div class="targeta desactivada" aria-disabled="true">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19L20 7l14 12"/><path d="M10 16v17h20V16"/><path d="M17 33v-9h6v9" stroke="#f5efe6"/></svg>
@@ -274,6 +286,7 @@ function pintaResultat(sortida, dades) {
 
     ${detallIRPF(r.estimacioIRPF)}
   `;
+  peuResultat(sortida, 'nomina', { ...estat }, resumNomina(r));
 }
 
 function detallIRPF(est) {

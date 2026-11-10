@@ -2,7 +2,7 @@
 // pdf.js es carrega només quan cal (és gran) i des de la còpia local de vendor/.
 // ---------- Lectura del PDF ----------
 let pdfjs = null;
-async function carregaPdfjs() {
+export async function carregaPdfjs() {
   if (!pdfjs) {
     const url = new URL('../vendor/pdfjs/pdf.min.mjs', import.meta.url).href;
     pdfjs = await import(url);

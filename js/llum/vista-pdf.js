@@ -1,5 +1,5 @@
 // Bloc «Tens la factura en PDF?» de la pantalla de la factura de llum i resum del que s'ha llegit.
-import { llegeixFacturaPdf } from './llegeix-pdf.js';
+import { llegeixFacturaPdf, facturaDeItems } from './llegeix-pdf.js';
 import { seccioPdf as seccioPdfComu, enllacaPdf as enllacaPdfComu } from '../pdf-ui.js';
 import { t } from '../i18n.js';
 
@@ -12,7 +12,7 @@ export const CAMPS_PDF = ['dataInici', 'dataFi', 'dies', 'potenciaP1', 'potencia
   'descompte', 'boSocialDia', 'lloguer', 'lloguerDia', 'altres', 'iva', 'impostElectric', 'totalFactura', 'maximetre'];
 
 export const seccioPdf = () => seccioPdfComu(t('Tens la factura en PDF?'), t("Tria el fitxer i l'app n'omplirà les xifres. El PDF es llegeix al teu dispositiu: no s'envia enlloc."));
-export const enllacaPdf = (el, aplica) => enllacaPdfComu(el, llegeixFacturaPdf, aplica);
+export const enllacaPdf = (el, aplica) => enllacaPdfComu(el, { pdf: llegeixFacturaPdf, items: facturaDeItems }, aplica);
 
 const NOMS = () => ({
   periode: t('Període de facturació'), potenciaP1: t('Potència punta (P1)'), potenciaP2: t('Potència vall (P2)'),
@@ -44,6 +44,7 @@ export function resumLectura(l) {
     <section class="lectura-pdf">
       <h2>${t('He llegit «{nom}»', { nom: esc(l.nom) })}</h2>
       <p class="petit">${t("He omplert el formulari amb aquestes xifres. Revisa que siguin les de la teva factura: cada comercialitzadora la fa d'una manera i em puc equivocar.")}</p>
+      ${l.ocr ? `<div class="avis alerta">${t("L'he llegit d'una foto: revisa bé cada xifra, sobretot les comes i els decimals.")}</div>` : ''}
       <table class="taula compacta"><tbody>${files}</tbody></table>
       ${avisos.map(([n, text]) => `<div class="avis ${n}">${text}</div>`).join('')}
       <details class="ajuda"><summary>${t('Què he llegit del PDF')}</summary><pre class="text-pdf">${esc(l.linies.join('\n'))}</pre></details>
