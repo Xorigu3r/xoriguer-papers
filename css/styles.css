@@ -1,22 +1,22 @@
 :root {
   /* Paleta de la família Xoriguer: negre, taronja i blanc trencat */
-  --fons: #25272c;
-  --superficie: #2f3137;
-  --superficie-2: #383b42;
-  --text: #f7f2ea;
-  --text-suau: #bdb7ae;
-  --vora: #464952;
+  --fons: #33363c;
+  --superficie: #3e4148;
+  --superficie-2: #474a52;
+  --text: #faf6f0;
+  --text-suau: #c9c3ba;
+  --vora: #555963;
   --primari: #ff8a1f;
   --primari-fort: #ff6a00;
-  --primari-suau: #45301c;
+  --primari-suau: #54391f;
   --sobre-primari: #111112;
   --degradat: linear-gradient(90deg, #ff5a00, #ff8a1f 55%, #ffb43a);
   --alerta: #ffb15c;
-  --alerta-fons: #3f3020;
+  --alerta-fons: #4b3a27;
   --ok: #7fd49a;
-  --ok-fons: #233a2b;
+  --ok-fons: #2c4535;
   --info: #9cc6ee;
-  --info-fons: #22334a;
+  --info-fons: #2b3d55;
   --puja: #7fd49a;
   --baixa: #ff8b7d;
   --radi: 12px;
@@ -29,7 +29,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background: radial-gradient(1200px 520px at 50% -220px, #34373d, transparent), var(--fons);
+  background: radial-gradient(1200px 520px at 50% -220px, #42454c, transparent), var(--fons);
   color: var(--text);
   min-height: 100vh;
   display: flex;
