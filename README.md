@@ -1,4 +1,4 @@
-# Papers de casa — Entén els teus papers
+# Xoriguer Papers — Entén els teus papers
 
 PWA (mòbil i ordinador) que explica els documents de casa en llenguatge planer.
 Tot es calcula al dispositiu: no hi ha servidor ni s'envia cap dada.
@@ -11,6 +11,8 @@ Tot es calcula al dispositiu: no hi ha servidor ni s'envia cap dada.
 | Factura de llum | Pendent |
 | Aigua, gas, IBI | Més endavant |
 | OCR (Tesseract.js) | Al final |
+
+Per publicar-la a GitHub: [PUBLICAR.md](PUBLICAR.md).
 
 ## Executar
 
