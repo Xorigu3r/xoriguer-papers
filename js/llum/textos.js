@@ -1,0 +1,81 @@
+// Explicacions de cada línia de la factura de llum i glossari, en català i castellà.
+import { idioma } from '../i18n.js';
+
+const EXPLICACIONS = {
+  ca: {
+    potencia: "El que pagues per tenir la llum disponible, encara que no l'encenguis: kW contractats × dies × preu per kW i dia. Una part són peatges i càrrecs fixats pel BOE (iguals per a tothom) i la resta és el marge de la comercialitzadora.",
+    potenciaP1: 'Potència punta-pla (P1): la que pots fer servir de dilluns a divendres de 8 a 24 h. És la cara.',
+    potenciaP2: 'Potència vall (P2): la de la nit i els caps de setmana. El peatge és gairebé zero, per això és molt més barata.',
+    energia: 'Els kWh que has gastat, multiplicats pel preu de cada franja horària. Inclou els peatges i càrrecs per kWh i el preu de l\'energia de la teva comercialitzadora.',
+    energiaP1: 'Punta (P1): de dilluns a divendres de 10 a 14 h i de 18 a 22 h. És la franja més cara.',
+    energiaP2: 'Pla (P2): de dilluns a divendres de 8 a 10 h, de 14 a 18 h i de 22 a 24 h.',
+    energiaP3: 'Vall (P3): de 0 a 8 h cada dia, i tot el dia els caps de setmana i festius nacionals. És la més barata.',
+    boSocial: "Finançament del bo social: tots els clients paguen uns cèntims al dia perquè les llars vulnerables tinguin descompte. L'import el decideix cada comercialitzadora.",
+    descompte: "Descomptes de la teva oferta (per exemple, un % sobre l'energia). Es resten abans de calcular l'impost elèctric.",
+    impostElectric: "Impost especial sobre l'electricitat. Normalment és el 5,11269632 % de la potència i l'energia, amb un mínim d'1 € per MWh consumit. Del 22/03 al 31/05/2026 va baixar al 0,5 %.",
+    lloguer: "Lloguer del comptador a la distribuïdora. El preu el fixa el Govern: 0,81 €/mes per a un comptador monofàsic digital. Si el comptador és teu, no en pagues.",
+    altres: 'Serveis que has contractat a part: manteniment, assegurances, assistència... No són obligatoris i pots donar-te de baixa.',
+    iva: "IVA del 21 % sobre tot (també sobre l'impost elèctric). Del 22/03 al 31/05/2026 va ser del 10 % si tenies 10 kW o menys contractats.",
+    regulat: "Peatges i càrrecs: la part de la factura que fixen la CNMC i el Ministeri al BOE. Paga les xarxes elèctriques i altres costos del sistema (renovables, illes...). És igual a totes les comercialitzadores.",
+    maximetre: "El maxímetre és la potència més alta que has fet servir en el període. Surt a la factura o a l'àrea de clients de la distribuïdora. Si sempre és molt inferior a la contractada, pots baixar potència i pagar menys.",
+  },
+  es: {
+    potencia: 'Lo que pagas por tener la luz disponible, aunque no la enciendas: kW contratados × días × precio por kW y día. Una parte son peajes y cargos fijados en el BOE (iguales para todos) y el resto es el margen de la comercializadora.',
+    potenciaP1: 'Potencia punta-llano (P1): la que puedes usar de lunes a viernes de 8 a 24 h. Es la cara.',
+    potenciaP2: 'Potencia valle (P2): la de la noche y los fines de semana. El peaje es casi cero, por eso es mucho más barata.',
+    energia: 'Los kWh que has gastado, multiplicados por el precio de cada franja horaria. Incluye los peajes y cargos por kWh y el precio de la energía de tu comercializadora.',
+    energiaP1: 'Punta (P1): de lunes a viernes de 10 a 14 h y de 18 a 22 h. Es la franja más cara.',
+    energiaP2: 'Llano (P2): de lunes a viernes de 8 a 10 h, de 14 a 18 h y de 22 a 24 h.',
+    energiaP3: 'Valle (P3): de 0 a 8 h cada día, y todo el día los fines de semana y festivos nacionales. Es la más barata.',
+    boSocial: 'Financiación del bono social: todos los clientes pagan unos céntimos al día para que los hogares vulnerables tengan descuento. El importe lo decide cada comercializadora.',
+    descompte: 'Descuentos de tu oferta (por ejemplo, un % sobre la energía). Se restan antes de calcular el impuesto eléctrico.',
+    impostElectric: 'Impuesto especial sobre la electricidad. Normalmente es el 5,11269632 % de la potencia y la energía, con un mínimo de 1 € por MWh consumido. Del 22/03 al 31/05/2026 bajó al 0,5 %.',
+    lloguer: 'Alquiler del contador a la distribuidora. El precio lo fija el Gobierno: 0,81 €/mes para un contador monofásico digital. Si el contador es tuyo, no lo pagas.',
+    altres: 'Servicios que has contratado aparte: mantenimiento, seguros, asistencia... No son obligatorios y puedes darte de baja.',
+    iva: 'IVA del 21 % sobre todo (también sobre el impuesto eléctrico). Del 22/03 al 31/05/2026 fue del 10 % si tenías 10 kW o menos contratados.',
+    regulat: 'Peajes y cargos: la parte de la factura que fijan la CNMC y el Ministerio en el BOE. Paga las redes eléctricas y otros costes del sistema (renovables, islas...). Es igual en todas las comercializadoras.',
+    maximetre: 'El maxímetro es la potencia más alta que has usado en el periodo. Aparece en la factura o en el área de clientes de la distribuidora. Si siempre es muy inferior a la contratada, puedes bajar potencia y pagar menos.',
+  },
+};
+
+const GLOSSARI = {
+  ca: [
+    ['kW i kWh', 'El kW és potència: quants aparells pots tenir encesos alhora. El kWh és energia: quant n\'has gastat. Un forn d\'1 kW encès una hora gasta 1 kWh.'],
+    ['Potència contractada', 'Els kW màxims que pots fer servir alhora. Si la superes, salta l\'interruptor (ICP). Es paga cada dia, encara que no consumeixis.'],
+    ['Maxímetre', 'La potència més alta que has fet servir en el període de la factura. Serveix per saber si tens massa potència contractada.'],
+    ['Tarifa 2.0TD', 'La tarifa d\'accés de totes les llars i petits negocis fins a 15 kW. Té 3 franges d\'energia (punta, pla i vall) i 2 de potència.'],
+    ['Punta, pla i vall', 'Les franges horàries de l\'energia. La punta és la més cara (dies feiners de 10 a 14 i de 18 a 22 h) i la vall la més barata (nit, caps de setmana i festius).'],
+    ['Peatges', 'El que es paga per fer servir les xarxes de transport i distribució. Els fixa la CNMC cada any.'],
+    ['Càrrecs', 'Costos del sistema elèctric que no són xarxes: primes a les renovables, sobrecost de les illes, deute del sistema... Els fixa el Ministeri.'],
+    ['Comercialitzadora', 'L\'empresa que et ven la llum i et fa la factura. La pots canviar quan vulguis.'],
+    ['Distribuïdora', 'L\'empresa propietària dels cables de la teva zona. No la pots triar; és qui llegeix el comptador i a qui truques si hi ha una avaria.'],
+    ['PVPC', 'Preu Voluntari per al Petit Consumidor: la tarifa regulada. El preu de l\'energia canvia cada hora segons el mercat. Només l\'ofereixen les comercialitzadores de referència.'],
+    ['Mercat lliure', 'Ofertes de les comercialitzadores amb preus que pacten elles: preu fix, tres períodes, tarifa plana...'],
+    ['CUPS', 'Codi Universal del Punt de Subministrament: el "DNI" del teu punt de llum. Surt a la factura i és el que et demanen per canviar de companyia.'],
+    ['Bo social', 'Descompte a la factura per a llars vulnerables (pensions mínimes, famílies nombroses, ingressos baixos...). Es demana a una comercialitzadora de referència.'],
+    ['Impost elèctric', 'Impost especial sobre l\'electricitat. S\'aplica sobre la potència i l\'energia, i després s\'hi suma l\'IVA.'],
+    ['Lectura estimada', 'Quan la distribuïdora no ha pogut llegir el comptador i calcula el consum. Després es regularitza amb la lectura real.'],
+    ['Autoconsum', 'Produir la teva pròpia electricitat (plaques solars). Els excedents que aboques a la xarxa es poden descomptar de la factura.'],
+  ],
+  es: [
+    ['kW y kWh', 'El kW es potencia: cuántos aparatos puedes tener encendidos a la vez. El kWh es energía: cuánta has gastado. Un horno de 1 kW encendido una hora gasta 1 kWh.'],
+    ['Potencia contratada', 'Los kW máximos que puedes usar a la vez. Si la superas, salta el interruptor (ICP). Se paga cada día, aunque no consumas.'],
+    ['Maxímetro', 'La potencia más alta que has usado en el periodo de la factura. Sirve para saber si tienes demasiada potencia contratada.'],
+    ['Tarifa 2.0TD', 'La tarifa de acceso de todos los hogares y pequeños negocios hasta 15 kW. Tiene 3 franjas de energía (punta, llano y valle) y 2 de potencia.'],
+    ['Punta, llano y valle', 'Las franjas horarias de la energía. La punta es la más cara (días laborables de 10 a 14 y de 18 a 22 h) y el valle la más barata (noche, fines de semana y festivos).'],
+    ['Peajes', 'Lo que se paga por usar las redes de transporte y distribución. Los fija la CNMC cada año.'],
+    ['Cargos', 'Costes del sistema eléctrico que no son redes: primas a las renovables, sobrecoste de las islas, deuda del sistema... Los fija el Ministerio.'],
+    ['Comercializadora', 'La empresa que te vende la luz y te hace la factura. La puedes cambiar cuando quieras.'],
+    ['Distribuidora', 'La empresa propietaria de los cables de tu zona. No la puedes elegir; es quien lee el contador y a quien llamas si hay una avería.'],
+    ['PVPC', 'Precio Voluntario para el Pequeño Consumidor: la tarifa regulada. El precio de la energía cambia cada hora según el mercado. Solo la ofrecen las comercializadoras de referencia.'],
+    ['Mercado libre', 'Ofertas de las comercializadoras con precios que pactan ellas: precio fijo, tres periodos, tarifa plana...'],
+    ['CUPS', 'Código Universal del Punto de Suministro: el "DNI" de tu punto de luz. Aparece en la factura y es lo que te piden para cambiar de compañía.'],
+    ['Bono social', 'Descuento en la factura para hogares vulnerables (pensiones mínimas, familias numerosas, ingresos bajos...). Se pide a una comercializadora de referencia.'],
+    ['Impuesto eléctrico', 'Impuesto especial sobre la electricidad. Se aplica sobre la potencia y la energía, y después se suma el IVA.'],
+    ['Lectura estimada', 'Cuando la distribuidora no ha podido leer el contador y calcula el consumo. Después se regulariza con la lectura real.'],
+    ['Autoconsumo', 'Producir tu propia electricidad (placas solares). Los excedentes que viertes a la red se pueden descontar de la factura.'],
+  ],
+};
+
+export const explicacions = () => EXPLICACIONS[idioma()];
+export const glossari = () => GLOSSARI[idioma()];

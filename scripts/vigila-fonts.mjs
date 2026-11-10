@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Vigila les fonts oficials que afecten les dades de l'app i avisa si hi ha novetats.
-//  - BOE: sumari diari (API de dades obertes) buscant cotització, SMI, IRPF, MEI...
+//  - BOE: sumari diari (API de dades obertes) buscant cotització, SMI, IRPF, MEI... i, per a la llum,
+//    peatges (CNMC), càrrecs, impost elèctric i IVA de l'electricitat.
 //  - AEAT: enllaços nous a la pàgina de retencions (algoritme i quadre de tipus).
 //  - Dades: comprova que existeix el fitxer de l'any en curs.
 // No modifica les dades: només avisa. Les xifres les revisa una persona (vegeu REVISIO-ANUAL.md).
@@ -28,6 +29,15 @@ const PATRONS = [
   [/cotizacion adicional de solidaridad/, 'Cotització de solidaritat'],
   [/^ley .*presupuestos generales del estado para/, 'Pressupostos Generals de l\'Estat'],
   [/bases (minimas|maximas) de cotizacion|tope maximo.*cotizacion/, 'Bases de cotització'],
+  // Factura de llum
+  [/precios de los cargos del sistema electrico/, 'Llum: càrrecs del sistema elèctric'],
+  [/impuesto (especial )?sobre la electricidad/, 'Llum: impost elèctric'],
+  [/^real decreto-ley.*(energia|electric|precios|crisis|inflacion)/, "Llum: possible canvi d'IVA o impost elèctric (real decret llei)"],
+  [/alquiler de (los )?(equipos de medida|contadores)/, 'Llum: lloguer del comptador'],
+];
+// Secció III (altres disposicions): aquí la CNMC publica els peatges de cada any.
+const PATRONS_III = [
+  [/peajes de acceso a las redes de transporte y distribucion de electricidad/, 'Llum: peatges de transport i distribució (CNMC)'],
 ];
 
 const normal = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -63,10 +73,12 @@ async function vigilaBOE(estat, troballes) {
     const json = await resp.json();
     // Només la secció I (Disposicions generals): és on surten ordres, reials decrets i lleis.
     const seccions = (json.data?.sumario?.diario ?? []).flatMap((dd) => [].concat(dd.seccion ?? []));
-    for (const it of items(seccions.filter((sc) => sc.codigo === '1'))) {
+    const perSeccio = [['1', PATRONS], ['3', PATRONS_III]]
+      .flatMap(([codi, patrons]) => items(seccions.filter((sc) => sc.codigo === codi)).map((it) => [it, patrons]));
+    for (const [it, patrons] of perSeccio) {
       if (vistos.has(it.identificador)) continue;
       const titol = normal(it.titulo);
-      const tema = PATRONS.find(([re]) => re.test(titol))?.[1];
+      const tema = patrons.find(([re]) => re.test(titol))?.[1];
       if (!tema) continue;
       vistos.add(it.identificador);
       troballes.push({
@@ -103,14 +115,16 @@ async function vigilaAEAT(estat, troballes) {
 
 async function vigilaDades(troballes) {
   const any = new Date().getFullYear();
-  try {
-    await access(join(arrel, 'data', `nomina-${any}.json`));
-  } catch {
-    troballes.push({
-      font: 'App', tema: 'Dades de l\'any', data: aData(new Date()),
-      titol: `No existeix data/nomina-${any}.json. L'app fa servir les dades de l'any anterior.`,
-      url: null,
-    });
+  for (const tipus of ['nomina', 'llum']) {
+    try {
+      await access(join(arrel, 'data', `${tipus}-${any}.json`));
+    } catch {
+      troballes.push({
+        font: 'App', tema: "Dades de l'any", data: aData(new Date()),
+        titol: `No existeix data/${tipus}-${any}.json. L'app fa servir les dades de l'any anterior.`,
+        url: null,
+      });
+    }
   }
 }
 
@@ -118,7 +132,7 @@ function informe(troballes) {
   const linies = [
     '## Novetats a les fonts oficials',
     '',
-    'Cal revisar si canvien les xifres de `data/nomina-AAAA.json` (vegeu `REVISIO-ANUAL.md`).',
+    'Cal revisar si canvien les xifres de `data/nomina-AAAA.json` o `data/llum-AAAA.json` (vegeu `REVISIO-ANUAL.md`).',
     '',
     '| Font | Tema | Data | Document |',
     '|---|---|---|---|',

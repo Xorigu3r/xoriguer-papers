@@ -69,8 +69,47 @@ for (const f of fitxers) {
 if (fitxers.length === 0) err('data', 'no hi ha cap fitxer nomina-AAAA.json');
 for (const any of index.anys ?? []) if (!fitxers.includes(`nomina-${any}.json`)) err('index.json', `falta data/nomina-${any}.json`);
 
+// ---------- Factura de llum: data/llum-AAAA.json ----------
+const fitxersLlum = (await readdir(dirDades)).filter((n) => /^llum-\d{4}\.json$/.test(n)).sort();
+for (const f of fitxersLlum) {
+  let d;
+  try { d = JSON.parse(await readFile(join(dirDades, f), 'utf8')); } catch (e) { err(f, `JSON invàlid: ${e.message}`); continue; }
+  const any = Number(f.match(/\d{4}/)[0]);
+  if (d.any !== any) err(f, `"any" (${d.any}) no coincideix amb el nom del fitxer`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d.revisat ?? '')) err(f, '"revisat" ha de ser una data AAAA-MM-DD');
+  if (!Array.isArray(d.fonts) || d.fonts.length === 0) err(f, 'falten les "fonts" oficials');
+  if (!index.llum?.includes(any)) err(f, `l'any ${any} no és a data/index.json ("llum")`);
+  const bisext = (any % 4 === 0 && any % 100 !== 0) || any % 400 === 0;
+  if (d.diesAny !== (bisext ? 366 : 365)) err(f, `diesAny ha de ser ${bisext ? 366 : 365}`);
+
+  // Peatges i càrrecs 2.0TD (potència en €/kW·any, energia en €/kWh)
+  for (const tipus of ['peatges', 'carrecs']) {
+    enRang(f, `${tipus}.potencia.P1`, d[tipus]?.potencia?.P1, 0, 60);
+    enRang(f, `${tipus}.potencia.P2`, d[tipus]?.potencia?.P2, 0, 10);
+    for (const p of ['P1', 'P2', 'P3']) enRang(f, `${tipus}.energia.${p}`, d[tipus]?.energia?.[p], 0, 0.3);
+  }
+  enRang(f, 'lloguerComptador.monofasicEurDia', d.lloguerComptador?.monofasicEurDia, 0, 0.2);
+  enRang(f, 'impostElectric.minimEurMWh', d.impostElectric?.minimEurMWh, 0, 5);
+
+  // Períodes fiscals: han de cobrir l'any sencer, sense forats ni solapaments
+  const pf = d.periodesFiscals ?? [];
+  if (pf.length === 0) err(f, 'falten els periodesFiscals');
+  const dia = (s) => Date.parse(`${s}T00:00:00Z`);
+  pf.forEach((p, i) => {
+    enRang(f, `periodesFiscals[${i}].iva`, p.iva, 0, 30);
+    enRang(f, `periodesFiscals[${i}].impostElectric`, p.impostElectric, 0, 10);
+    if (p.ivaReduit != null) enRang(f, `periodesFiscals[${i}].ivaReduit`, p.ivaReduit, 0, p.iva);
+    if (!(dia(p.fins) >= dia(p.des))) err(f, `periodesFiscals[${i}]: "fins" és anterior a "des"`);
+    if (i > 0 && dia(p.des) - dia(pf[i - 1].fins) !== 864e5) err(f, `periodesFiscals[${i}] no comença l'endemà de l'anterior`);
+  });
+  if (pf.length && (pf[0].des !== `${any}-01-01` || pf.at(-1).fins !== `${any}-12-31`)) err(f, 'els periodesFiscals han de cobrir de l\'1 de gener al 31 de desembre');
+  const pot = d.potenciesNormalitzades ?? [];
+  if (pot.length < 3 || pot.some((v, i) => i && v <= pot[i - 1])) err(f, 'potenciesNormalitzades ha de ser una llista creixent');
+}
+for (const any of index.llum ?? []) if (!fitxersLlum.includes(`llum-${any}.json`)) err('index.json', `falta data/llum-${any}.json`);
+
 if (errors.length) {
   console.error(`✖ ${errors.length} error(s) a les dades:\n- ${errors.join('\n- ')}`);
   process.exit(1);
 }
-console.log(`✔ Dades correctes (${fitxers.join(', ')})`);
+console.log(`✔ Dades correctes (${[...fitxers, ...fitxersLlum].join(', ')})`);

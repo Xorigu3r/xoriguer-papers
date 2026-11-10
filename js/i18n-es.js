@@ -113,8 +113,9 @@ export const ES = {
   "Glossari": 'Glosario',
   "Què vol dir base de cotització, meritacions, líquid a percebre...": 'Qué significa base de cotización, devengos, líquido a percibir...',
   "Factura de llum": 'Factura de la luz',
-  "Properament": 'Próximamente',
-  "Potència, energia, peatges i lloguer del comptador explicats.": 'Potencia, energía, peajes y alquiler del contador explicados.',
+  "Nou": 'Nuevo',
+  "Comprova la factura i entén potència, energia, peatges, impostos i comptador. Descobreix si et sobra potència.":
+    'Comprueba la factura y entiende potencia, energía, peajes, impuestos y contador. Descubre si te sobra potencia.',
   "Aigua, gas i IBI": 'Agua, gas e IBI',
   "Més endavant": 'Más adelante',
   "La resta de rebuts de casa.": 'El resto de recibos de casa.',
@@ -253,4 +254,123 @@ export const ES = {
   "Oficials de tercera i especialistes": 'Oficiales de tercera y especialistas',
   "Peons": 'Peones',
   "Menors de 18 anys": 'Menores de 18 años',
+
+  // ---------- Factura de llum ----------
+  "No s'han pogut carregar les dades de la factura de llum.": 'No se han podido cargar los datos de la factura de la luz.',
+  // Avisos
+  "El total de la teva factura quadra amb el càlcul (diferència de {dif}).": 'El total de tu factura cuadra con el cálculo (diferencia de {dif}).',
+  "El total de la factura ({factura}) i el calculat ({calc}) es diferencien en {dif}. Revisa que hagis copiat bé els preus i els kWh, i si hi ha serveis extra (manteniment, assegurances) o regularitzacions de lectures anteriors.":
+    'El total de la factura ({factura}) y el calculado ({calc}) se diferencian en {dif}. Revisa que hayas copiado bien los precios y los kWh, y si hay servicios extra (mantenimiento, seguros) o regularizaciones de lecturas anteriores.',
+  "El preu de potència {p} ({preu} €/kW) sembla anual o mensual. Aquí cal posar-lo per dia: divideix-lo per 365 (si és anual) o per 30 (si és mensual).":
+    'El precio de potencia {p} ({preu} €/kW) parece anual o mensual. Aquí hay que ponerlo por día: divídelo entre 365 (si es anual) o entre 30 (si es mensual).',
+  "El preu de potència {p} és inferior als peatges i càrrecs oficials ({oficial} €/kW·dia). Comprova que el preu sigui per kW i dia.":
+    'El precio de potencia {p} es inferior a los peajes y cargos oficiales ({oficial} €/kW·día). Comprueba que el precio sea por kW y día.',
+  "El preu de l'energia {p} ({preu}) és massa alt per ser €/kWh. Potser és en €/MWh o en cèntims: divideix-lo per 1.000 o per 100.":
+    'El precio de la energía {p} ({preu}) es demasiado alto para ser €/kWh. Quizá está en €/MWh o en céntimos: divídelo entre 1.000 o entre 100.',
+  "El maxímetre ({max} kW) supera la potència contractada ({pot} kW). En 2.0TD no hi ha penalització, però si et salta l'interruptor sovint potser et convé més potència.":
+    'El maxímetro ({max} kW) supera la potencia contratada ({pot} kW). En 2.0TD no hay penalización, pero si te salta el interruptor a menudo quizá te convenga más potencia.',
+  "El màxim que has fet servir és {max} kW i en tens {pot} contractats. Amb {rec} kW (amb marge) estalviaries uns {estalvi} l'any en potència punta. Abans, comprova el maxímetre de diversos mesos (sobretot a l'hivern i a l'estiu).":
+    'Lo máximo que has usado es {max} kW y tienes {pot} contratados. Con {rec} kW (con margen) ahorrarías unos {estalvi} al año en potencia punta. Antes, comprueba el maxímetro de varios meses (sobre todo en invierno y en verano).',
+  "La potència contractada ({pot} kW) està ben ajustada al que fas servir (maxímetre {max} kW).": 'La potencia contratada ({pot} kW) está bien ajustada a lo que usas (maxímetro {max} kW).',
+  "Només el {pct} del teu consum és en hores vall. Posar rentadores, rentaplats o la càrrega del cotxe a la nit o el cap de setmana et pot estalviar fins a {dif} cèntims per kWh.":
+    'Solo el {pct} de tu consumo es en horas valle. Poner lavadoras, lavavajillas o la carga del coche por la noche o el fin de semana te puede ahorrar hasta {dif} céntimos por kWh.',
+  "Tens un preu únic d'energia: et costa igual a qualsevol hora. Si pots concentrar consum a la nit i el cap de setmana, una tarifa amb tres períodes podria sortir més barata.":
+    'Tienes un precio único de energía: te cuesta igual a cualquier hora. Si puedes concentrar consumo por la noche y el fin de semana, una tarifa con tres periodos podría salir más barata.',
+  "Una part d'aquesta factura cau entre el 22 de març i el 31 de maig del 2026: l'impost elèctric era del 0,5 % i l'IVA del 10 % si tens 10 kW o menys contractats.":
+    'Una parte de esta factura cae entre el 22 de marzo y el 31 de mayo de 2026: el impuesto eléctrico era del 0,5 % y el IVA del 10 % si tienes 10 kW o menos contratados.',
+  "El lloguer del comptador el fixa el Govern (0,81 €/mes per a un comptador monofàsic digital). Si el comptador és teu, no te l'han de cobrar.":
+    'El alquiler del contador lo fija el Gobierno (0,81 €/mes para un contador monofásico digital). Si el contador es tuyo, no te lo pueden cobrar.',
+  // Formulari
+  "Comprovar la factura de llum": 'Comprobar la factura de la luz',
+  "Per a la tarifa domèstica 2.0TD (fins a 15 kW). Copia les xifres de la teva factura: el resultat s'actualitza mentre escrius.":
+    'Para la tarifa doméstica 2.0TD (hasta 15 kW). Copia las cifras de tu factura: el resultado se actualiza mientras escribes.',
+  "Simular canvis": 'Simular cambios',
+  "Període de facturació": 'Periodo de facturación',
+  "Des del": 'Desde el',
+  "Fins al": 'Hasta el',
+  "Dies": 'Días',
+  "automàtic": 'automático',
+  "Les dates serveixen per aplicar l'IVA i l'impost elèctric de cada moment (el 2026 han canviat).":
+    'Las fechas sirven para aplicar el IVA y el impuesto eléctrico de cada momento (en 2026 han cambiado).',
+  "Potència": 'Potencia',
+  "Potència punta (P1)": 'Potencia punta (P1)',
+  "Potència vall (P2)": 'Potencia valle (P2)',
+  "igual que P1": 'igual que P1',
+  "Preu potència P1": 'Precio potencia P1',
+  "Surt a la factura com a «€/kW dia». Si el teu contracte el dona per any, divideix-lo per 365.":
+    'Aparece en la factura como «€/kW día». Si tu contrato lo da por año, divídelo entre 365.',
+  "Preu potència P2": 'Precio potencia P2',
+  "Energia consumida": 'Energía consumida',
+  "Tinc un preu únic d'energia (igual a totes les hores)": 'Tengo un precio único de energía (igual a todas horas)',
+  "Consum punta (P1)": 'Consumo punta (P1)',
+  "Consum pla (P2)": 'Consumo llano (P2)',
+  "Consum vall (P3)": 'Consumo valle (P3)',
+  "Preu P1": 'Precio P1',
+  "Preu P2": 'Precio P2',
+  "Preu P3": 'Precio P3',
+  "Preu de l'energia": 'Precio de la energía',
+  "Altres conceptes": 'Otros conceptos',
+  "Finançament del bo social": 'Financiación del bono social',
+  "Descomptes": 'Descuentos',
+  "Pago lloguer del comptador": 'Pago alquiler del contador',
+  "Lloguer del comptador": 'Alquiler del contador',
+  "Altres serveis (manteniment, assegurances...)": 'Otros servicios (mantenimiento, seguros...)',
+  "Impostos": 'Impuestos',
+  "Deixa-ho en blanc i es calcularan segons les dates. Escriu-los només si la teva factura n'aplica uns altres.":
+    'Déjalo en blanco y se calcularán según las fechas. Escríbelos solo si tu factura aplica otros.',
+  "Impost elèctric": 'Impuesto eléctrico',
+  "Total de la factura": 'Total de la factura',
+  "Maxímetre (potència màxima utilitzada)": 'Maxímetro (potencia máxima utilizada)',
+  // Resultat
+  "Introdueix la <strong>potència</strong> i el <strong>consum</strong> per veure el càlcul.": 'Introduce la <strong>potencia</strong> y el <strong>consumo</strong> para ver el cálculo.',
+  "carrega una factura d'exemple": 'carga una factura de ejemplo',
+  "Total": 'Total',
+  "punta": 'punta',
+  "pla": 'llano',
+  "vall": 'valle',
+  "dies": 'días',
+  "Energia": 'Energía',
+  "Peatges i càrrecs (BOE)": 'Peajes y cargos (BOE)',
+  "Energia i marge de la comercialitzadora": 'Energía y margen de la comercializadora',
+  "Comptador i altres": 'Contador y otros',
+  "Total de la factura calculat": 'Total de la factura calculado',
+  "de mitjana, tot inclòs": 'de media, todo incluido',
+  "Any aproximat": 'Año aproximado',
+  "On van els teus diners": 'Adónde va tu dinero',
+  "Què són els peatges i càrrecs?": '¿Qué son los peajes y cargos?',
+  "Terme de potència": 'Término de potencia',
+  "Total potència": 'Total potencia',
+  "dels quals peatges i càrrecs": 'de los cuales peajes y cargos',
+  "Terme d'energia": 'Término de energía',
+  "Total energia": 'Total energía',
+  "Altres serveis": 'Otros servicios',
+  "Base de l'IVA": 'Base del IVA',
+  "Quan gastes la llum": 'Cuándo gastas la luz',
+  "Peatges i càrrecs oficials 2026 (2.0TD)": 'Peajes y cargos oficiales 2026 (2.0TD)',
+  "dia": 'día',
+  "Fonts: {fonts}.": 'Fuentes: {fonts}.',
+  "Si tens el PVPC, el preu de l'energia canvia cada hora; aquí pots posar el preu mitjà que surt a la factura.":
+    'Si tienes el PVPC, el precio de la energía cambia cada hora; aquí puedes poner el precio medio que aparece en la factura.',
+  // Simulador
+  "Simular la factura de llum": 'Simular la factura de la luz',
+  "Partim de la teva factura. Prova què passaria si canvies la potència, el moment en què gastes o la companyia.":
+    'Partimos de tu factura. Prueba qué pasaría si cambias la potencia, el momento en que gastas o la compañía.',
+  'Primer omple la teva factura a <a href="#/llum">Factura de llum</a>. Mentrestant, fem servir una factura d\'exemple.':
+    'Primero rellena tu factura en <a href="#/llum">Factura de la luz</a>. Mientras tanto, usamos una factura de ejemplo.',
+  "Potència contractada": 'Potencia contratada',
+  "actual": 'actual',
+  "Hàbits": 'Hábitos',
+  "Consum que passes a hores vall": 'Consumo que pasas a horas valle',
+  "Part del consum en punta i pla que mous a la nit o al cap de setmana (rentadora, rentaplats, cotxe elèctric...).":
+    'Parte del consumo en punta y llano que mueves a la noche o al fin de semana (lavadora, lavavajillas, coche eléctrico...).',
+  "Comparar una altra oferta": 'Comparar otra oferta',
+  "Deixa en blanc el que no canviï. Els preus són sense impostos, com surten a les ofertes.": 'Deja en blanco lo que no cambie. Los precios son sin impuestos, como aparecen en las ofertas.',
+  "Preu únic d'energia": 'Precio único de energía',
+  "o per períodes, a sota": 'o por periodos, debajo',
+  "Factura simulada": 'Factura simulada',
+  "Estalvi aproximat: {e} l'any": 'Ahorro aproximado: {e} al año',
+  "Costaria uns {e} més l'any": 'Costaría unos {e} más al año',
+  "Total anual aproximat": 'Total anual aproximado',
+  "Si baixes la potència, comprova abans el maxímetre de diversos mesos: si la superes, saltarà l'interruptor. Canviar de potència pot tenir un cost de tràmit a la distribuïdora.":
+    'Si bajas la potencia, comprueba antes el maxímetro de varios meses: si la superas, saltará el interruptor. Cambiar de potencia puede tener un coste de trámite en la distribuidora.',
 };

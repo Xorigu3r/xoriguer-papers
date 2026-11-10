@@ -1,6 +1,7 @@
 import { calculaNomina, fmt } from './calc.js';
 import { seccioModel145, llegeixLlistes145, enllacaModel145 } from './model145.js';
 import { explicacions as expl, glossari as gloss } from './textos.js';
+import { glossari as glossLlum } from '../llum/textos.js';
 import { t } from '../i18n.js';
 
 // ---------- Estat del formulari (memòria; opcionalment al dispositiu) ----------
@@ -53,11 +54,11 @@ export function vistaInici(el) {
         <h2>${t('Glossari')}</h2>
         <p>${t('Què vol dir base de cotització, meritacions, líquid a percebre...')}</p>
       </a>
-      <div class="targeta desactivada" aria-disabled="true">
+      <a class="targeta" href="#/llum">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 25c-3-2.5-5-6-5-9.5a11 11 0 0 1 22 0c0 3.5-2 7-5 9.5v4H14z"/><path d="M15 33h10M17 37h6" stroke="#f5efe6"/><path d="M21 12l-3 6h5l-3 6" stroke="#f5efe6"/></svg>
-        <h2>${t('Factura de llum')} <span class="etiqueta">${t('Properament')}</span></h2>
-        <p>${t('Potència, energia, peatges i lloguer del comptador explicats.')}</p>
-      </div>
+        <h2>${t('Factura de llum')} <span class="etiqueta">${t('Nou')}</span></h2>
+        <p>${t('Comprova la factura i entén potència, energia, peatges, impostos i comptador. Descobreix si et sobra potència.')}</p>
+      </a>
       <div class="targeta desactivada" aria-disabled="true">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19L20 7l14 12"/><path d="M10 16v17h20V16"/><path d="M17 33v-9h6v9" stroke="#f5efe6"/></svg>
         <h2>${t('Aigua, gas i IBI')} <span class="etiqueta">${t('Més endavant')}</span></h2>
@@ -396,8 +397,13 @@ export function vistaGlossari(el) {
   el.append(h(`
     <h1>${t('Glossari')}</h1>
     <div class="camp cerca"><label for="cerca">${t('Cerca un terme')}</label><input id="cerca" type="search" placeholder="${t('p. ex. base, IRPF, prorrata...')}"></div>
-    <dl class="glossari" id="llista-glossari">
+    <h2 class="seccio-glossari">${t('Nòmina')}</h2>
+    <dl class="glossari">
       ${gloss().map(([terme, d]) => `<div class="terme"><dt>${terme}</dt><dd>${d}</dd></div>`).join('')}
+    </dl>
+    <h2 class="seccio-glossari">${t('Factura de llum')}</h2>
+    <dl class="glossari">
+      ${glossLlum().map(([terme, d]) => `<div class="terme"><dt>${terme}</dt><dd>${d}</dd></div>`).join('')}
     </dl>
   `));
   const cerca = el.querySelector('#cerca');
@@ -405,5 +411,6 @@ export function vistaGlossari(el) {
   cerca.addEventListener('input', () => {
     const q = treuAccents(cerca.value);
     el.querySelectorAll('.terme').forEach((x) => { x.hidden = q && !treuAccents(x.textContent).includes(q); });
+    el.querySelectorAll('.glossari').forEach((dl) => { dl.previousElementSibling.hidden = ![...dl.children].some((x) => !x.hidden); });
   });
 }

@@ -12,6 +12,13 @@ incidència quan surt una norma que pot canviar les xifres. Llavors una persona 
 | Gener–abril | **Ordre de cotització** (o RDL de pròrroga) | `basesCotitzacio`, `cotitzacioTreballador`, `cotitzacioSolidaritat` |
 | Quan toqui | Canvis al **RIRPF** o a la Llei 35/2006 | `irpf.*` |
 
+| Quan | Què surt | Què canvia a `data/llum-AAAA.json` |
+|---|---|---|
+| Desembre (secció III) | Resolució de la **CNMC** de peatges de transport i distribució | `peatges` |
+| Desembre | **Ordre TED** de càrrecs del sistema elèctric | `carrecs` |
+| Quan toqui | Reials decrets llei que canvien l'**IVA** o l'**impost elèctric** de la llum | `periodesFiscals` |
+| Rarament | Canvis al lloguer dels comptadors | `lloguerComptador` |
+
 Fins que surt l'ordre de cotització, molts anys es fan servir provisionalment les xifres de l'any anterior.
 
 ## Passos per a un any nou
@@ -28,9 +35,18 @@ Fins que surt l'ordre de cotització, molts anys es fan servir provisionalment l
 5. Puja `VERSIO` a `sw.js` i publica. Les apps instal·lades descarreguen les dades noves en obrir-se amb connexió.
 6. Tanca la incidència del vigilant.
 
+### Factura de llum
+
+1. Copia `data/llum-2026.json` a `data/llum-2027.json`, canvia `"any"`, `"diesAny"` (366 si és de traspàs) i afegeix l'any a `"llum"` de `data/index.json`.
+2. `peatges`: annex I de la resolució de la CNMC, taules «transporte y distribución» de la 2.0TD (potència €/kW·any, energia €/kWh).
+3. `carrecs`: ordre TED de càrrecs, segment tarifari 1 (és la 2.0TD: 2 períodes de potència i 3 d'energia).
+4. `periodesFiscals`: un tram per cada canvi d'IVA o impost elèctric durant l'any, sense forats (el validador ho comprova).
+   Si una rebaixa depèn d'una condició (IPC...), no la posis fins que no consti que s'aplica.
+5. `npm test` i publica.
+
 ## Vigilant
 
 - Local: `npm run vigila` (opció `--des-de=AAAAMMDD` per revisar dies concrets, `--sense-desar` per no tocar l'estat).
-- Mira la secció I del BOE (disposicions generals) i la pàgina de retencions de l'AEAT.
+- Mira la secció I del BOE (disposicions generals), els peatges de la CNMC a la secció III i la pàgina de retencions de l'AEAT.
 - Desa el que ja ha vist a `scripts/estat-vigilancia.json` perquè no avisi dues vegades.
-- També avisa si comença un any i no hi ha `data/nomina-AAAA.json`.
+- També avisa si comença un any i no hi ha `data/nomina-AAAA.json` o `data/llum-AAAA.json`.

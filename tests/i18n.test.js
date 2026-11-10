@@ -9,7 +9,7 @@ const llegeix = (r) => readFileSync(new URL(r, arrel), 'utf8');
 
 export function clausDelCodi() {
   const claus = new Set();
-  const fitxers = ['js/app.js', ...readdirSync(new URL('js/nomina/', arrel)).map((f) => `js/nomina/${f}`)];
+  const fitxers = ['js/app.js', ...['nomina', 'llum'].flatMap((d) => readdirSync(new URL(`js/${d}/`, arrel)).map((f) => `js/${d}/${f}`))];
   const re = /\bt\(\s*(?:'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)")/g;
   for (const f of fitxers) {
     for (const m of llegeix(f).matchAll(re)) claus.add((m[1] ?? m[2]).replace(/\\(.)/g, '$1'));

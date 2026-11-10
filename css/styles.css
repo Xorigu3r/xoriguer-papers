@@ -217,3 +217,15 @@ details.linia p { margin: .35rem 0 .2rem; font-size: .85rem; color: var(--text-s
 }
 .idioma button[aria-pressed="true"] { background: var(--primari); color: var(--sobre-primari); }
 .idioma button:focus-visible { outline: 2px solid var(--primari); outline-offset: -2px; }
+
+/* Factura de llum: on van els diners */
+.barra-parts { display: flex; height: 22px; border-radius: 999px; overflow: hidden; background: var(--superficie-2); margin: .5rem 0 .75rem; }
+.barra-parts span { display: block; height: 100%; }
+.part-regulat { background: #6aa9ff; }
+.part-comercial { background: var(--primari); }
+.part-impostos { background: #c9c3ba; }
+.part-altres { background: #7c8090; }
+.llegenda { list-style: none; padding: 0; margin: 0 0 .5rem; display: grid; gap: .35rem; }
+.llegenda li { display: flex; align-items: center; gap: .5rem; font-size: .92rem; }
+.llegenda strong { margin-left: auto; padding-left: .5rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.llegenda .punt { width: 12px; height: 12px; border-radius: 50%; flex: none; }

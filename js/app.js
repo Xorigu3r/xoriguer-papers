@@ -1,15 +1,24 @@
 import { vistaInici, vistaNomina, vistaSimular, vistaGlossari } from './nomina/vistes.js';
+import { vistaLlum, vistaSimularLlum } from './llum/vistes.js';
 import { t, idioma, canviaIdioma, locale } from './i18n.js';
 
 const vista = document.getElementById('vista');
 let dades = null;
+let dadesLlum = null;
 
 // Fa servir les dades de l'any en curs; si encara no hi són, les de l'últim any disponible i ho avisa.
 async function carregaDades() {
   const idx = await fetch('data/index.json').then((r) => (r.ok ? r.json() : { anys: [2026] })).catch(() => ({ anys: [2026] }));
   const anyActual = new Date().getFullYear();
   const disponibles = [...idx.anys].sort((a, b) => a - b);
-  const any = disponibles.includes(anyActual) ? anyActual : disponibles.filter((a) => a <= anyActual).at(-1) ?? disponibles.at(-1);
+  const tria = (llista) => {
+    const d = [...llista].sort((a, b) => a - b);
+    return d.includes(anyActual) ? anyActual : d.filter((a) => a <= anyActual).at(-1) ?? d.at(-1);
+  };
+  const any = tria(disponibles);
+  // Factura de llum: fitxer propi per any; si falla, la nòmina continua funcionant
+  const anyLlum = tria(idx.llum ?? [any]);
+  dadesLlum = await fetch(`data/llum-${anyLlum}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
   const resp = await fetch(`data/nomina-${any}.json`);
   if (!resp.ok) throw new Error(t("No s'han pogut carregar les dades"));
   dades = await resp.json();
@@ -45,14 +54,21 @@ const rutes = {
   '/nomina': vistaNomina,
   '/simular': vistaSimular,
   '/glossari': vistaGlossari,
+  '/llum': vistaLlum,
+  '/llum/simular': vistaSimularLlum,
 };
+const esLlum = (ruta) => ruta.startsWith('/llum');
 
 function navega() {
   const ruta = location.hash.replace(/^#/, '') || '/';
   const fn = rutes[ruta] ?? vistaInici;
-  document.querySelectorAll('.menu a').forEach((a) => a.setAttribute('aria-current', a.dataset.ruta === ruta ? 'page' : 'false'));
+  document.querySelectorAll('.menu a').forEach((a) => a.setAttribute('aria-current', a.dataset.ruta === ruta || (a.dataset.ruta === '/llum' && esLlum(ruta)) ? 'page' : 'false'));
   vista.innerHTML = '';
-  fn(vista, dades);
+  if (esLlum(ruta) && rutes[ruta] && !dadesLlum) {
+    vista.innerHTML = `<div class="avis alerta">${t("No s'han pogut carregar les dades de la factura de llum.")}</div>`;
+    return;
+  }
+  fn(vista, esLlum(ruta) ? dadesLlum : dades);
   vista.focus({ preventScroll: true });
   window.scrollTo(0, 0);
 }
