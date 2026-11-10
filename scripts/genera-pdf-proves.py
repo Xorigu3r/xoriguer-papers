@@ -112,7 +112,90 @@ def escanejada():
     c.save()
 
 
+def factura(nom, files, titol):
+    """Factura de llum amb el format habitual: dades, resum, detall amb fórmules i informació de consum."""
+    c = canvas.Canvas(str(DIR / nom), pagesize=A4)
+    c.setFont('Helvetica-Bold', 13)
+    c.drawString(40, 805, titol)
+    y = 780
+    for f in files:
+        if f is None:
+            y -= 8
+            continue
+        if isinstance(f, str):
+            c.setFont('Helvetica-Bold', 10); c.drawString(40, y, f); c.setFont('Helvetica', 9)
+        else:
+            c.setFont('Helvetica', 9)
+            c.drawString(40, y, f[0])
+            if len(f) > 1: dreta(c, 550, y, f[1])
+        y -= 14
+        if y < 60:
+            c.showPage(); y = 800
+    c.save()
+
+
+def factures():
+    # Mercat lliure, en català, 3 preus d'energia, descompte i maxímetre (octubre del 2026, 31 dies)
+    factura('factura-llum-ca.pdf', [
+        'DADES DE LA FACTURA',
+        ('Núm. factura: FE26-000001    Data d\'emissió: 05/11/2026',),
+        ('Període de facturació: del 01/10/2026 al 31/10/2026 (31 dies)',),
+        ('Data de càrrec: 20/11/2026',),
+        None, 'RESUM DE LA FACTURA',
+        ('Per potència contractada', '15,68 €'), ('Per energia consumida', '36,86 €'), ('Descomptes', '-3,69 €'),
+        ('Impost elèctric', '2,53 €'), ('Lloguer d\'equips de mesura', '0,83 €'), ('IVA', '11,09 €'),
+        ('TOTAL FACTURA', '63,89 €'),
+        None, 'DADES DEL CONTRACTE',
+        ('Titular: Persona Prova    CUPS: ES0000000000000000AA0F',),
+        ('Potències contractades: punta 4,6 kW  vall 4,6 kW    Peatge d\'accés: 2.0TD',),
+        None, 'DETALL DE LA FACTURA',
+        ('Potència P1 punta: 4,6 kW x 31 dies x 0,098000 €/kW dia', '13,97 €'),
+        ('Potència P2 vall: 4,6 kW x 31 dies x 0,012000 €/kW dia', '1,71 €'),
+        ('Energia P1 punta: 62 kWh x 0,220000 €/kWh', '13,64 €'),
+        ('Energia P2 pla: 75 kWh x 0,150000 €/kWh', '11,25 €'),
+        ('Energia P3 vall: 133 kWh x 0,090000 €/kWh', '11,97 €'),
+        ('Descompte 10 % sobre l\'energia', '-3,69 €'),
+        ('Finançament del bo social: 31 dies x 0,019000 €/dia', '0,59 €'),
+        ('Impost sobre l\'electricitat 5,11269632 % s/ 49,44 €', '2,53 €'),
+        ('Lloguer del comptador: 31 dies x 0,026630 €/dia', '0,83 €'),
+        ('IVA 21 % s/ 52,80 €', '11,09 €'),
+        None, 'INFORMACIÓ DEL CONSUM',
+        ('Consum punta (P1): 62 kWh    Consum pla (P2): 75 kWh    Consum vall (P3): 133 kWh',),
+        ('Maxímetre (potència màxima demandada): 3,1 kW',),
+        ('Averies: 900 000 000 (distribuïdora)    Atenció al client: 900 000 001',),
+    ], 'Comercialitzadora Prova, SA')
+
+    # PVPC en castellà: peatges, càrrecs i marge separats, potència en €/kW año x (30/365)
+    factura('factura-llum-pvpc.pdf', [
+        'DATOS DE LA FACTURA',
+        ('Periodo de facturación: 12/09/2026 - 11/10/2026 (30 días)',),
+        ('Precio voluntario para el pequeño consumidor (PVPC)',),
+        None, 'RESUMEN DE LA FACTURA',
+        ('Por potencia contratada', '8,94 €'), ('Por energía consumida', '28,18 €'), ('Impuesto electricidad', '1,92 €'),
+        ('Alquiler de equipos', '0,80 €'), ('IVA', '8,45 €'), ('TOTAL IMPORTE FACTURA', '48,67 €'),
+        None, 'DATOS DEL CONTRATO',
+        ('Potencia contratada P1: 3,45 kW  P2: 3,45 kW    Peaje de acceso 2.0TD',),
+        None, 'DETALLE DE LA FACTURA',
+        ('Peajes de transporte y distribución P1 3,45 kW x 23,324952 €/kW año x (30/365) días', '6,61 €'),
+        ('Cargos P1 3,45 kW x 4,379461 €/kW año x (30/365) días', '1,24 €'),
+        ('Margen de comercialización fijo 3,45 kW x 3,113000 €/kW año x (30/365) días', '0,88 €'),
+        ('Peajes de transporte y distribución P2 3,45 kW x 0,443770 €/kW año x (30/365) días', '0,13 €'),
+        ('Cargos P2 3,45 kW x 0,281653 €/kW año x (30/365) días', '0,08 €'),
+        ('Peajes y cargos energía P1 41 kWh x 0,097553 €/kWh', '4,00 €'),
+        ('Peajes y cargos energía P2 52 kWh x 0,029267 €/kWh', '1,52 €'),
+        ('Peajes y cargos energía P3 96 kWh x 0,003292 €/kWh', '0,32 €'),
+        ('Coste de la energía 189 kWh x 0,118200 €/kWh', '22,34 €'),
+        ('Financiación bono social fijo 30 días x 0,012742 €/día', '0,38 €'),
+        ('Impuesto sobre la electricidad 5,11269632% s/ 37,50 €', '1,92 €'),
+        ('Alquiler de equipos de medida y control 30 días x 0,026630 €/día', '0,80 €'),
+        ('IVA 21% s/ 40,22 €', '8,45 €'),
+        None, 'INFORMACIÓN DEL CONSUMO',
+        ('Máxima potencia demandada (maxímetro): P1 2,87 kW  P2 1,92 kW',),
+    ], 'Comercializadora de Referencia Prueba, SA')
+
+
 columna('nomina-columna.pdf')
+factures()
 dues_columnes()
 escanejada()
 columna('nomina-contrasenya.pdf', encrypt=StandardEncryption('1234', canPrint=1))

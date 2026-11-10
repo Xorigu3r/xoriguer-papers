@@ -9,9 +9,10 @@ Tot es calcula al dispositiu: no hi ha servidor ni s'envia cap dada.
 |---|---|
 | Nòmina: comprovar, explicar línia a línia, simular, glossari, avisos | ✅ v0.1 (formulari o PDF) |
 | Nòmina explicada: nòmina d'exemple (model oficial) amb punts clicables | ✅ v0.1 |
-| Factura de llum (2.0TD): comprovar, on van els diners, potència, simular i comparar ofertes | ✅ v0.1 (formulari, sense OCR) |
+| Factura de llum (2.0TD): comprovar, on van els diners, potència, simular i comparar ofertes | ✅ v0.1 (formulari o PDF) |
+| Factura de llum explicada: factura d'exemple amb punts clicables | ✅ v0.1 |
 | Aigua, gas, IBI | Més endavant |
-| Llegir la nòmina en PDF (pdf.js, al dispositiu) | ✅ v0.1 |
+| Llegir la nòmina i la factura de llum en PDF (pdf.js, al dispositiu) | ✅ v0.1 |
 | Foto / PDF escanejat (OCR amb Tesseract.js) | Següent |
 
 Per publicar-la a GitHub: [PUBLICAR.md](PUBLICAR.md).
@@ -40,6 +41,8 @@ npm test
 - `js/i18n.js` i `js/i18n-es.js` — idiomes. Els textos s'escriuen en català amb `t('…')` i la traducció castellana va a `i18n-es.js`; `npm test` avisa si en falta alguna. L'idioma es tria amb el botó CA/ES (per defecte, el del navegador).
 - `js/nomina/vistes.js` — pantalles (comprovar, simular, glossari).
 - `js/nomina/llegeix-pdf.js` i `vista-pdf.js` — llegeix la nòmina en PDF al dispositiu: busca els conceptes pel nom (català i castellà), omple el formulari i mostra què ha llegit perquè es revisi. Proves: `tests/llegeix-pdf.test.js` amb els PDF de `tests/fixtures/` (es generen amb `python scripts/genera-pdf-proves.py`).
+- `js/llum/llegeix-pdf.js`, `js/llum/vista-pdf.js` i `js/llum/exemple.js` — factura de llum en PDF (busca les fórmules «kW x dies x €/kW dia», «kWh x €/kWh», impostos...) i factura explicada. Proves: `tests/llegeix-factura.test.js`.
+- `js/pdf-text.js`, `js/pdf-ui.js` i `js/punts.js` — peces compartides: text dels PDF, bloc «Tria el PDF» i punts taronja dels documents explicats.
 - `vendor/pdfjs/` — pdf.js 6.4.299 (build legacy, Apache-2.0), còpia local: no es carrega de cap CDN.
 - `data/index.json` — anys disponibles. L'app fa servir l'any en curs o, si encara no hi és, l'últim i ho avisa.
 - `js/nomina/model145.js` — formulari del model 145.

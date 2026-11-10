@@ -4,6 +4,7 @@
 import { calculaNomina, fmt } from './calc.js';
 import { explicacions as expl } from './textos.js';
 import { t } from '../i18n.js';
+import { creaPunts, htmlPopover, activaPunts } from '../punts.js';
 
 const EXEMPLE = {
   salariBase: '1500', complementsSalarials: '180', noSalarials: '60', horesExtres: '',
@@ -38,11 +39,7 @@ export function vistaNominaExemple(el, dades) {
   const totalEmp = r2(empLinies.reduce((s, l) => s + l.import, 0));
 
   // Cada punt: títol, explicació i, si cal, el càlcul concret de l'exemple
-  const punts = [];
-  const punt = (clau, titol, detall = '') => {
-    punts.push({ clau, titol, text: textos[clau] ?? '', detall });
-    return `<button type="button" class="np-punt" data-n="${punts.length - 1}" aria-label="${esc(t('Explicació: {titol}', { titol }))}">${punts.length}</button>`;
-  };
+  const { punts, punt } = creaPunts(textos);
   const calc = (l) => t('En aquest exemple: {base} × {tipus} = {import}.', { base: fmt(l.base), tipus: `${n2(l.tipus)} %`, import: fmt(l.import) });
 
   // Línies de la taula central (com a les nòmines reals: quantia, concepte, import, deducció, totals)
@@ -144,80 +141,12 @@ export function vistaNominaExemple(el, dades) {
     </section>
     </div>
 
-    <div class="np-pop" role="dialog" aria-modal="false" aria-labelledby="np-pop-titol" tabindex="-1" hidden>
-      <div class="np-pop-cap"><span class="np-pop-n"></span><h2 id="np-pop-titol"></h2>
-        <button type="button" class="np-tanca" aria-label="${esc(t('Tanca'))}">×</button></div>
-      <p class="np-pop-text"></p>
-      <p class="np-pop-detall"></p>
-      <div class="np-pop-nav">
-        <button type="button" class="boto secundari" data-mou="-1">← ${t('Anterior')}</button>
-        <button type="button" class="boto" data-mou="1">${t('Següent')} →</button>
-      </div>
-    </div>
+    ${htmlPopover()}
     </div>
     <p class="petit">${t('Vols comprovar la teva? Ves a <a href="#/nomina">Comprovar nòmina</a> i posa-hi les xifres de la teva nòmina.')}</p>
   `;
   const tpl = document.createElement('template');
   tpl.innerHTML = html.trim();
   el.append(tpl.content);
-
-  const marc = el.querySelector('.np-marc');
-  const pop = marc.querySelector('.np-pop');
-  const botons = [...marc.querySelectorAll('.np-punt')];
-  let actiu = -1;
-
-  const fila = (b) => b.closest('[data-fila]');
-  const tanca = () => {
-    if (actiu < 0) return undefined;
-    const b = botons[actiu];
-    fila(b).classList.remove('np-actiu');
-    b.setAttribute('aria-expanded', 'false');
-    pop.hidden = true;
-    actiu = -1;
-    return b;
-  };
-  const obre = (n) => {
-    tanca();
-    actiu = n;
-    const p = punts[n];
-    const b = botons[n];
-    const f = fila(b);
-    f.classList.add('np-actiu');
-    b.setAttribute('aria-expanded', 'true');
-    // Que el punt sigui visible dins la nòmina (al mòbil es llisca de costat)
-    // (al mòbil l'explicació ocupa la part de baix: l'apartat es posa a dalt perquè es vegi)
-    const mobil = matchMedia('(max-width: 639px)').matches;
-    b.scrollIntoView({ block: mobil ? 'start' : 'nearest', inline: 'nearest' });
-    if (mobil) scrollBy(0, -90);
-    pop.querySelector('.np-pop-n').textContent = n + 1;
-    pop.querySelector('h2').textContent = p.titol;
-    pop.querySelector('.np-pop-text').textContent = p.text;
-    const det = pop.querySelector('.np-pop-detall');
-    det.textContent = p.detall;
-    det.hidden = !p.detall;
-    pop.querySelector('[data-mou="-1"]').disabled = n === 0;
-    pop.querySelector('[data-mou="1"]').disabled = n === punts.length - 1;
-    pop.hidden = false;
-    // A l'ordinador, just a sota de l'apartat; al mòbil, el CSS el fixa a baix de la pantalla
-    pop.style.top = `${f.getBoundingClientRect().bottom - marc.getBoundingClientRect().top + 6}px`;
-    pop.focus({ preventScroll: true });
-    if (getComputedStyle(pop).position === 'absolute') pop.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  };
-
-  botons.forEach((b, i) => {
-    b.setAttribute('aria-expanded', 'false');
-    b.addEventListener('click', (ev) => { ev.stopPropagation(); if (actiu === i) tanca(); else obre(i); });
-  });
-  pop.addEventListener('click', (ev) => ev.stopPropagation());
-  pop.querySelector('.np-tanca').addEventListener('click', () => tanca()?.focus());
-  pop.querySelectorAll('[data-mou]').forEach((b) => b.addEventListener('click', () => obre(actiu + Number(b.dataset.mou))));
-  pop.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Escape') tanca()?.focus();
-    else if (ev.key === 'ArrowRight' && actiu < punts.length - 1) obre(actiu + 1);
-    else if (ev.key === 'ArrowLeft' && actiu > 0) obre(actiu - 1);
-  });
-  el.querySelector('#np-comenca').addEventListener('click', (ev) => { ev.stopPropagation(); obre(0); });
-  // Tocar fora tanca l'explicació (l'escoltador es treu quan es canvia de pantalla)
-  const fora = (ev) => { if (!el.contains(marc)) document.removeEventListener('click', fora); else if (!pop.contains(ev.target)) tanca(); };
-  document.addEventListener('click', fora);
+  activaPunts(el, punts);
 }

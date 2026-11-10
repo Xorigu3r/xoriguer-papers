@@ -66,6 +66,11 @@ export function vistaInici(el) {
         <h2>${t('Factura de llum')} <span class="etiqueta">${t('Nou')}</span></h2>
         <p>${t('Comprova la factura i entén potència, energia, peatges, impostos i comptador. Descobreix si et sobra potència.')}</p>
       </a>
+      <a class="targeta" href="#/llum/exemple">
+        <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5h15l6 6v24H10z"/><path d="M19 13l-3 6h5l-3 6" stroke="#f5efe6"/><circle cx="29" cy="29" r="5" fill="#ff8a1f" stroke="none"/></svg>
+        <h2>${t('Factura explicada')} <span class="etiqueta">${t('Nou')}</span></h2>
+        <p>${t("Una factura de llum d'exemple amb punts: toca cada apartat i et diu què és.")}</p>
+      </a>
       <div class="targeta desactivada" aria-disabled="true">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19L20 7l14 12"/><path d="M10 16v17h20V16"/><path d="M17 33v-9h6v9" stroke="#f5efe6"/></svg>
         <h2>${t('Aigua, gas i IBI')} <span class="etiqueta">${t('Més endavant')}</span></h2>

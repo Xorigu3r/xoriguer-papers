@@ -3,6 +3,7 @@
 import { llegeixNominaPdf } from './llegeix-pdf.js';
 import { fmt } from './calc.js';
 import { t } from '../i18n.js';
+import { seccioPdf as seccioPdfComu, enllacaPdf as enllacaPdfComu } from '../pdf-ui.js';
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const pc = (n) => `${String(n).replace('.', ',')} %`;
@@ -19,65 +20,9 @@ const NOMS = () => ({
 });
 
 export function seccioPdf() {
-  return `
-    <section class="llegir-pdf" id="llegir-pdf">
-      <h2>${t('Tens la nòmina en PDF?')}</h2>
-      <p class="petit">${t("Tria el fitxer i l'app n'omplirà les xifres. El PDF es llegeix al teu dispositiu: no s'envia enlloc.")}</p>
-      <label class="boto" for="pdf-nomina">${t('Tria el PDF')}</label>
-      <input type="file" id="pdf-nomina" accept="application/pdf,.pdf" class="amagat">
-      <form id="pdf-contrasenya" class="pdf-contrasenya" hidden onsubmit="return false">
-        <label for="pdf-clau">${t('Aquest PDF té contrasenya (sovint és el teu DNI). Escriu-la per obrir-lo:')}</label>
-        <div class="fila-clau"><input type="password" id="pdf-clau" autocomplete="off"><button type="submit" class="boto">${t('Obre')}</button></div>
-      </form>
-      <div id="pdf-estat" aria-live="polite"></div>
-    </section>`;
+  return seccioPdfComu(t('Tens la nòmina en PDF?'), t("Tria el fitxer i l'app n'omplirà les xifres. El PDF es llegeix al teu dispositiu: no s'envia enlloc."));
 }
-
-/** Connecta el bloc. `aplica(lectura)` rep el resultat quan s'ha pogut llegir. */
-export function enllacaPdf(el, aplica) {
-  const input = el.querySelector('#pdf-nomina');
-  const formClau = el.querySelector('#pdf-contrasenya');
-  const estatEl = el.querySelector('#pdf-estat');
-  let bytes = null;
-  let nom = '';
-  const missatge = (nivell, html) => { estatEl.innerHTML = `<div class="avis ${nivell}">${html}</div>`; };
-
-  const llegeix = async (contrasenya) => {
-    missatge('info', t('Llegint la nòmina…'));
-    try {
-      // pdf.js es queda el buffer: se li passa una còpia per poder tornar-ho a provar amb contrasenya
-      const lectura = await llegeixNominaPdf(bytes.slice(), contrasenya);
-      formClau.hidden = true;
-      estatEl.innerHTML = '';
-      aplica({ ...lectura, nom });
-    } catch (e) {
-      const codi = e?.codi;
-      if (codi === 'contrasenya' || codi === 'contrasenya-incorrecta') {
-        formClau.hidden = false;
-        if (codi === 'contrasenya-incorrecta') missatge('alerta', t('La contrasenya no és correcta.'));
-        else estatEl.innerHTML = '';
-        formClau.querySelector('input').focus();
-      } else if (codi === 'sense-text') {
-        missatge('alerta', t('Aquest PDF és una imatge (escanejat o fotografiat) i no té text per llegir. Aviat es podrà llegir amb la càmera; mentrestant, copia les xifres al formulari.'));
-      } else {
-        missatge('alerta', t("No s'ha pogut obrir el fitxer. Comprova que sigui un PDF."));
-      }
-    }
-  };
-
-  input.addEventListener('change', async () => {
-    const f = input.files?.[0];
-    input.value = '';
-    if (!f) return;
-    if (f.size > 15e6) { missatge('alerta', t('El fitxer és massa gran per ser una nòmina (més de 15 MB).')); return; }
-    nom = f.name;
-    bytes = new Uint8Array(await f.arrayBuffer());
-    formClau.hidden = true;
-    formClau.querySelector('input').value = '';
-    llegeix();
-  });
-  formClau.addEventListener('submit', () => llegeix(formClau.querySelector('input').value));
-}
+export const enllacaPdf = (el, aplica) => enllacaPdfComu(el, llegeixNominaPdf, aplica);
 
 /** Resum del que s'ha llegit, amb comprovacions dels percentatges oficials. */
 export function resumLectura(l, dades) {

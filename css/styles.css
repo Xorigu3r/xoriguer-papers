@@ -319,3 +319,38 @@ details.linia p { margin: .35rem 0 .2rem; font-size: .85rem; color: var(--text-s
 .fila-clau input { flex: 1; min-width: 0; padding: .55rem .7rem; border-radius: 8px; border: 1px solid var(--vora); background: var(--fons); color: var(--text); font: inherit; }
 .lectura-pdf .taula { max-width: 34rem; }
 .text-pdf { max-height: 16rem; overflow: auto; padding: .6rem; background: var(--fons); border-radius: 8px; font-size: .75rem; white-space: pre; }
+
+/* ---------- Factura de llum explicada ---------- */
+.factura-paper { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: .8rem; }
+.fp-cap { display: flex; justify-content: space-between; align-items: center; padding-bottom: .6rem; border-bottom: 3px solid #1d6f8c; margin-bottom: .8rem; }
+.fp-logo { padding: .4rem .7rem; background: #1d6f8c; color: #fff; font-size: .7rem; letter-spacing: .06em; line-height: 1.2; border-radius: 4px; }
+.fp-logo b { font-size: 1rem; }
+.fp-titol { text-align: right; display: flex; flex-direction: column; }
+.fp-titol b { font-size: 1rem; color: #1d6f8c; }
+.fp-graella { display: grid; grid-template-columns: 1.4fr 1fr; gap: .7rem; }
+.fp-caixa { border: 1px solid #c8d6dc; border-radius: 6px; padding: .55rem .7rem; margin-bottom: .7rem; }
+.fp-caixa h3 { display: flex; align-items: center; gap: .4rem; margin: 0 0 .4rem; font-size: .82rem; color: #1d6f8c; text-transform: uppercase; letter-spacing: .03em; }
+.fp-caixa p { margin: .2rem 0; display: flex; align-items: center; gap: .4rem; }
+.fp-total { background: #eaf4f7; text-align: center; }
+.fp-total h3 { justify-content: center; }
+.fp-total strong { display: block; font-size: 1.8rem; color: #1d1d1f; margin: .3rem 0; }
+.fp-total p { justify-content: center; color: #555; }
+.fp-resum, .fp-detall, .fp-lectures { width: 100%; border-collapse: collapse; }
+.fp-resum td, .fp-detall td, .fp-lectures td, .fp-lectures th { padding: .22rem .3rem; border-bottom: 1px solid #e3eaed; vertical-align: middle; }
+.fp-lectures th { font-weight: 600; text-align: left; font-size: .72rem; color: #555; }
+.fp-detall small { display: block; color: #555; font-size: .72rem; }
+.fp-detall td.np-c-punt, .fp-lectures .np-c-punt { width: 2rem; text-align: center; }
+.fp-tot td { font-weight: 700; border-bottom: 0; }
+.fp-historial { display: flex; gap: .4rem; align-items: flex-start; margin-top: .3rem; }
+.fp-historial > div { flex: 1; }
+.fp-historial svg { width: 100%; max-width: 340px; display: block; }
+.fp-llegenda { list-style: none; padding: 0; margin: .4rem 0 0; font-size: .74rem; }
+.fp-llegenda li { display: flex; align-items: center; gap: .35rem; }
+.fp-llegenda .punt { width: .7rem; height: .7rem; border-radius: 2px; display: inline-block; }
+.fp-etiqueta { display: flex; flex-direction: column; gap: 2px; }
+.fp-etiqueta span { color: #fff; font-weight: 700; font-size: .7rem; padding: 1px 6px; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%); }
+.fp-l0 { background: #2e8b3e; } .fp-l1 { background: #58a33a; } .fp-l2 { background: #a7c33a; } .fp-l3 { background: #e6c62b; }
+.fp-l4 { background: #e89a2b; } .fp-l5 { background: #e0612a; } .fp-l6 { background: #c8322a; }
+.fp-sel { outline: 2px solid #1d1d1f; }
+.fp-peu { border-top: 1px solid #c8d6dc; padding-top: .5rem; font-size: .74rem; color: #333; }
+.fp-peu p { display: flex; align-items: center; gap: .4rem; margin: .25rem 0; }

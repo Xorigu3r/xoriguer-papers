@@ -1,5 +1,6 @@
 import { vistaInici, vistaNomina, vistaSimular, vistaGlossari } from './nomina/vistes.js';
 import { vistaNominaExemple } from './nomina/exemple.js';
+import { vistaFacturaExemple } from './llum/exemple.js';
 import { vistaLlum, vistaSimularLlum } from './llum/vistes.js';
 import { t, idioma, canviaIdioma, locale } from './i18n.js';
 
@@ -58,13 +59,14 @@ const rutes = {
   '/glossari': vistaGlossari,
   '/llum': vistaLlum,
   '/llum/simular': vistaSimularLlum,
+  '/llum/exemple': vistaFacturaExemple,
 };
 const esLlum = (ruta) => ruta.startsWith('/llum');
 
 function navega() {
   const ruta = location.hash.replace(/^#/, '') || '/';
   const fn = rutes[ruta] ?? vistaInici;
-  document.querySelectorAll('.menu a').forEach((a) => a.setAttribute('aria-current', a.dataset.ruta === ruta || (a.dataset.ruta === '/llum' && esLlum(ruta)) ? 'page' : 'false'));
+  document.querySelectorAll('.menu a').forEach((a) => a.setAttribute('aria-current', a.dataset.ruta === ruta || (a.dataset.ruta === '/llum' && ruta === '/llum/simular') ? 'page' : 'false'));
   vista.innerHTML = '';
   if (esLlum(ruta) && rutes[ruta] && !dadesLlum) {
     vista.innerHTML = `<div class="avis alerta">${t("No s'han pogut carregar les dades de la factura de llum.")}</div>`;
