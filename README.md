@@ -34,7 +34,8 @@ npm test
 
 - `data/nomina-AAAA.json` — percentatges, bases, escala d'IRPF i llindars de l'any. **S'han de revisar cada any** amb el BOE (ordre de cotització, SMI, art. 81 i 85 del RIRPF).
 - `js/nomina/calc.js` — motor de càlcul (funcions pures, provades amb `node --test`).
-- `js/nomina/textos.js` — explicacions de cada línia i glossari.
+- `js/nomina/textos.js` — explicacions de cada línia i glossari (català i castellà).
+- `js/i18n.js` i `js/i18n-es.js` — idiomes. Els textos s'escriuen en català amb `t('…')` i la traducció castellana va a `i18n-es.js`; `npm test` avisa si en falta alguna. L'idioma es tria amb el botó CA/ES (per defecte, el del navegador).
 - `js/nomina/vistes.js` — pantalles (comprovar, simular, glossari).
 - `data/index.json` — anys disponibles. L'app fa servir l'any en curs o, si encara no hi és, l'últim i ho avisa.
 - `js/nomina/model145.js` — formulari del model 145.

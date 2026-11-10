@@ -1,4 +1,5 @@
 import { vistaInici, vistaNomina, vistaSimular, vistaGlossari } from './nomina/vistes.js';
+import { t, idioma, canviaIdioma, locale } from './i18n.js';
 
 const vista = document.getElementById('vista');
 let dades = null;
@@ -10,16 +11,34 @@ async function carregaDades() {
   const disponibles = [...idx.anys].sort((a, b) => a - b);
   const any = disponibles.includes(anyActual) ? anyActual : disponibles.filter((a) => a <= anyActual).at(-1) ?? disponibles.at(-1);
   const resp = await fetch(`data/nomina-${any}.json`);
-  if (!resp.ok) throw new Error('No s\'han pogut carregar les dades');
+  if (!resp.ok) throw new Error(t("No s'han pogut carregar les dades"));
   dades = await resp.json();
-  const revisat = new Date(dades.revisat).toLocaleDateString('ca-ES');
-  document.getElementById('any-dades').textContent = `Dades de ${dades.any} (revisades el ${revisat}).`;
-  if (dades.any < anyActual) {
-    const avis = document.getElementById('avis-dades');
-    avis.textContent = `Encara fem servir les xifres de ${dades.any}. Les de ${anyActual} (cotització, SMI, IRPF) s'actualitzaran quan es publiquin al BOE; mentrestant, els càlculs poden variar una mica.`;
+  dades.anyActual = anyActual;
+}
+
+// Textos fixos de la pàgina (menú, peu) i dades de l'any, en l'idioma triat.
+function pintaMarc() {
+  document.documentElement.lang = idioma();
+  document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll('[data-t-title]').forEach((el) => { el.title = t(el.dataset.tTitle); });
+  document.querySelectorAll('[data-t-aria]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.tAria)); });
+  document.querySelectorAll('[data-idioma]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.idioma === idioma())));
+  if (!dades) return;
+  const revisat = new Date(dades.revisat).toLocaleDateString(locale());
+  document.getElementById('any-dades').textContent = t('Dades de {any} (revisades el {data}).', { any: dades.any, data: revisat });
+  const avis = document.getElementById('avis-dades');
+  if (dades.any < dades.anyActual) {
+    avis.textContent = t("Encara fem servir les xifres de {any}. Les de {actual} (cotització, SMI, IRPF) s'actualitzaran quan es publiquin al BOE; mentrestant, els càlculs poden variar una mica.", { any: dades.any, actual: dades.anyActual });
     avis.hidden = false;
   }
 }
+
+document.querySelectorAll('[data-idioma]').forEach((b) => b.addEventListener('click', () => {
+  if (b.dataset.idioma === idioma()) return;
+  canviaIdioma(b.dataset.idioma);
+  pintaMarc();
+  if (dades) navega();
+}));
 
 const rutes = {
   '/': vistaInici,
@@ -58,10 +77,12 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
+pintaMarc();
 try {
   await carregaDades();
+  pintaMarc();
   window.addEventListener('hashchange', navega);
   navega();
 } catch (err) {
-  vista.innerHTML = `<div class="avis alerta">${err.message}. Obre l'app des d'un servidor (no amb file://).</div>`;
+  vista.innerHTML = `<div class="avis alerta">${err.message}. ${t("Obre l'app des d'un servidor (no amb file://).")}</div>`;
 }

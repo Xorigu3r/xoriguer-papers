@@ -1,6 +1,7 @@
 import { calculaNomina, fmt } from './calc.js';
 import { seccioModel145, llegeixLlistes145, enllacaModel145 } from './model145.js';
-import { explicacions, glossari } from './textos.js';
+import { explicacions as expl, glossari as gloss } from './textos.js';
+import { t } from '../i18n.js';
 
 // ---------- Estat del formulari (memòria; opcionalment al dispositiu) ----------
 const CLAU = 'pdc.nomina.v1';
@@ -15,7 +16,7 @@ const PER_DEFECTE = {
 };
 
 function llegeixDesat() {
-  try { const t = localStorage.getItem(CLAU); return t ? JSON.parse(t) : null; } catch { return null; }
+  try { const v = localStorage.getItem(CLAU); return v ? JSON.parse(v) : null; } catch { return null; }
 }
 let estat = { ...PER_DEFECTE, ...(llegeixDesat() ?? {}) };
 
@@ -26,41 +27,41 @@ function desa() {
   } catch { /* emmagatzematge no disponible */ }
 }
 
-const h = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content; };
+const h = (html) => { const tpl = document.createElement('template'); tpl.innerHTML = html.trim(); return tpl.content; };
 const pct = (n) => `${String(n).replace('.', ',')} %`;
 
 // ---------- Inici ----------
 export function vistaInici(el) {
   el.append(h(`
     <section class="heroi">
-      <h1>Entén els teus <span>papers</span></h1>
-      <p>Explicacions en llenguatge planer dels documents de casa. Sense registre i sense enviar res enlloc: tot es calcula al teu dispositiu.</p>
+      <h1>${t('Entén els teus <span>papers</span>')}</h1>
+      <p>${t('Explicacions en llenguatge planer dels documents de casa. Sense registre i sense enviar res enlloc: tot es calcula al teu dispositiu.')}</p>
     </section>
     <div class="targetes">
       <a class="targeta" href="#/nomina">
         <img class="targeta-icona" src="icons/nomina.svg" alt="" width="40" height="40">
-        <h2>Nòmina</h2>
-        <p>Comprova si els càlculs quadren i entén cada línia: cotitzacions, IRPF, pagues extres.</p>
+        <h2>${t('Nòmina')}</h2>
+        <p>${t('Comprova si els càlculs quadren i entén cada línia: cotitzacions, IRPF, pagues extres.')}</p>
       </a>
       <a class="targeta" href="#/simular">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="24" height="30" rx="4"/><rect x="12" y="9" width="16" height="7" rx="1.5"/><path d="M13 22h2M19 22h2M25 22h2M13 28h2M19 28h2M25 28h2" stroke="#f5efe6"/></svg>
-        <h2>Simulador</h2>
-        <p>Si em pugen 100 €, quant cobro net? I amb reducció de jornada? I amb pagues prorratejades?</p>
+        <h2>${t('Simulador')}</h2>
+        <p>${t('Si em pugen 100 €, quant cobro net? I amb reducció de jornada? I amb pagues prorratejades?')}</p>
       </a>
       <a class="targeta" href="#/glossari">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11c-4-3-9-3-13-2v22c4-1 9-1 13 2 4-3 9-3 13-2V9c-4-1-9-1-13 2z"/><path d="M20 11v22"/><path d="M11 16h5M11 21h5M24 16h5M24 21h5" stroke="#f5efe6"/></svg>
-        <h2>Glossari</h2>
-        <p>Què vol dir base de cotització, meritacions, líquid a percebre...</p>
+        <h2>${t('Glossari')}</h2>
+        <p>${t('Què vol dir base de cotització, meritacions, líquid a percebre...')}</p>
       </a>
       <div class="targeta desactivada" aria-disabled="true">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 25c-3-2.5-5-6-5-9.5a11 11 0 0 1 22 0c0 3.5-2 7-5 9.5v4H14z"/><path d="M15 33h10M17 37h6" stroke="#f5efe6"/><path d="M21 12l-3 6h5l-3 6" stroke="#f5efe6"/></svg>
-        <h2>Factura de llum <span class="etiqueta">Properament</span></h2>
-        <p>Potència, energia, peatges i lloguer del comptador explicats.</p>
+        <h2>${t('Factura de llum')} <span class="etiqueta">${t('Properament')}</span></h2>
+        <p>${t('Potència, energia, peatges i lloguer del comptador explicats.')}</p>
       </div>
       <div class="targeta desactivada" aria-disabled="true">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19L20 7l14 12"/><path d="M10 16v17h20V16"/><path d="M17 33v-9h6v9" stroke="#f5efe6"/></svg>
-        <h2>Aigua, gas i IBI <span class="etiqueta">Més endavant</span></h2>
-        <p>La resta de rebuts de casa.</p>
+        <h2>${t('Aigua, gas i IBI')} <span class="etiqueta">${t('Més endavant')}</span></h2>
+        <p>${t('La resta de rebuts de casa.')}</p>
       </div>
     </div>
   `));
@@ -72,7 +73,7 @@ function camp(nom, etiqueta, { tipus = 'number', ajuda, sufix = '€', min = 0, 
     <div class="camp">
       <label for="f-${nom}">${etiqueta}</label>
       <div class="entrada"><input id="f-${nom}" name="${nom}" type="${tipus}" inputmode="decimal" min="${min}" step="${step}" placeholder="${placeholder}" value="${estat[nom] ?? ''}"><span class="sufix">${sufix}</span></div>
-      ${ajuda ? `<details class="ajuda"><summary>Què és?</summary><p>${ajuda}</p></details>` : ''}
+      ${ajuda ? `<details class="ajuda"><summary>${t('Què és?')}</summary><p>${ajuda}</p></details>` : ''}
     </div>`;
 }
 function casella(nom, etiqueta) {
@@ -80,61 +81,62 @@ function casella(nom, etiqueta) {
 }
 
 export function vistaNomina(el, dades) {
+  const explicacions = expl();
   el.append(h(`
-    <h1>Comprovar la nòmina</h1>
-    <p class="intro">Copia les xifres de la teva nòmina d'un mes normal (sense paga extra). Els resultats s'actualitzen mentre escrius.</p>
+    <h1>${t('Comprovar la nòmina')}</h1>
+    <p class="intro">${t("Copia les xifres de la teva nòmina d'un mes normal (sense paga extra). Els resultats s'actualitzen mentre escrius.")}</p>
     <div class="dues-columnes">
       <form id="form-nomina" class="formulari" autocomplete="off" onsubmit="return false">
         <fieldset>
-          <legend>Meritacions (el que guanyes)</legend>
-          ${camp('salariBase', 'Salari base', { ajuda: explicacions.salariBase })}
-          ${camp('complementsSalarials', 'Complements salarials (suma)', { ajuda: explicacions.complementsSalarials, placeholder: '0' })}
-          ${camp('noSalarials', 'Conceptes no salarials (dietes, transport...)', { ajuda: explicacions.noSalarials, placeholder: '0' })}
-          ${camp('horesExtres', 'Hores extres', { ajuda: explicacions.horesExtres, placeholder: '0' })}
-          ${casella('horesExtresForcaMajor', 'Les hores extres són per força major')}
+          <legend>${t('Meritacions (el que guanyes)')}</legend>
+          ${camp('salariBase', t('Salari base'), { ajuda: explicacions.salariBase })}
+          ${camp('complementsSalarials', t('Complements salarials (suma)'), { ajuda: explicacions.complementsSalarials, placeholder: '0' })}
+          ${camp('noSalarials', t('Conceptes no salarials (dietes, transport...)'), { ajuda: explicacions.noSalarials, placeholder: '0' })}
+          ${camp('horesExtres', t('Hores extres'), { ajuda: explicacions.horesExtres, placeholder: '0' })}
+          ${casella('horesExtresForcaMajor', t('Les hores extres són per força major'))}
         </fieldset>
         <fieldset>
-          <legend>Pagues extres</legend>
+          <legend>${t('Pagues extres')}</legend>
           <div class="camp">
-            <label for="f-pagues">Nombre de pagues a l'any</label>
+            <label for="f-pagues">${t("Nombre de pagues a l'any")}</label>
             <select id="f-pagues" name="pagues">
               ${[12, 14, 15, 16].map((n) => `<option value="${n}" ${String(estat.pagues) === String(n) ? 'selected' : ''}>${n}</option>`).join('')}
             </select>
           </div>
-          ${casella('prorratejades', 'Les pagues extres estan prorratejades (les cobro cada mes)')}
-          ${camp('importPagaExtra', 'Import de cada paga extra', { ajuda: 'Si no ho saps, deixa-ho en blanc i es farà servir el salari base. Mira el conveni: sovint és salari base + antiguitat.', placeholder: 'igual al salari base' })}
+          ${casella('prorratejades', t('Les pagues extres estan prorratejades (les cobro cada mes)'))}
+          ${camp('importPagaExtra', t('Import de cada paga extra'), { ajuda: t('Si no ho saps, deixa-ho en blanc i es farà servir el salari base. Mira el conveni: sovint és salari base + antiguitat.'), placeholder: t('igual al salari base') })}
         </fieldset>
         <fieldset>
-          <legend>Contracte</legend>
+          <legend>${t('Contracte')}</legend>
           <div class="camp">
-            <label for="f-contracte">Tipus de contracte</label>
+            <label for="f-contracte">${t('Tipus de contracte')}</label>
             <select id="f-contracte" name="contracte">
-              <option value="indefinit" ${estat.contracte === 'indefinit' ? 'selected' : ''}>Indefinit</option>
-              <option value="temporal" ${estat.contracte === 'temporal' ? 'selected' : ''}>Temporal</option>
+              <option value="indefinit" ${estat.contracte === 'indefinit' ? 'selected' : ''}>${t('Indefinit')}</option>
+              <option value="temporal" ${estat.contracte === 'temporal' ? 'selected' : ''}>${t('Temporal')}</option>
             </select>
           </div>
-          ${casella('contracteMenysUnAny', 'Contracte de durada inferior a un any')}
+          ${casella('contracteMenysUnAny', t('Contracte de durada inferior a un any'))}
           <div class="camp">
-            <label for="f-grup">Grup de cotització</label>
+            <label for="f-grup">${t('Grup de cotització')}</label>
             <select id="f-grup" name="grup">
-              ${Object.entries(dades.grupsCotitzacio).map(([k, v]) => `<option value="${k}" ${String(estat.grup) === k ? 'selected' : ''}>${k}. ${v}</option>`).join('')}
+              ${Object.entries(dades.grupsCotitzacio).map(([k, v]) => `<option value="${k}" ${String(estat.grup) === k ? 'selected' : ''}>${k}. ${t(v)}</option>`).join('')}
             </select>
-            <details class="ajuda"><summary>On ho trobo?</summary><p>Surt a la capçalera de la nòmina com a «grup de cotització» o «grup tarifa». Només afecta la base mínima.</p></details>
+            <details class="ajuda"><summary>${t('On ho trobo?')}</summary><p>${t('Surt a la capçalera de la nòmina com a «grup de cotització» o «grup tarifa». Només afecta la base mínima.')}</p></details>
           </div>
-          ${camp('jornada', 'Jornada', { sufix: '%', step: '1', min: 1, ajuda: '100 % si treballes a jornada completa. Si fas mitja jornada, 50 %.' })}
+          ${camp('jornada', t('Jornada'), { sufix: '%', step: '1', min: 1, ajuda: t('100 % si treballes a jornada completa. Si fas mitja jornada, 50 %.') })}
         </fieldset>
         <fieldset>
           <legend>IRPF</legend>
-          ${camp('irpfNomina', "Percentatge d'IRPF de la nòmina", { sufix: '%', ajuda: explicacions.irpf + ' Si el deixes en blanc, es farà servir el càlcul amb el teu model 145.', placeholder: 'calcular' })}
+          ${camp('irpfNomina', t("Percentatge d'IRPF de la nòmina"), { sufix: '%', ajuda: `${explicacions.irpf} ${t('Si el deixes en blanc, es farà servir el càlcul amb el teu model 145.')}`, placeholder: t('calcular') })}
         </fieldset>
         ${seccioModel145(estat)}
         <fieldset>
-          <legend>Per comprovar</legend>
-          ${camp('netNomina', 'Líquid a percebre de la nòmina', { ajuda: explicacions.net, placeholder: 'opcional' })}
+          <legend>${t('Per comprovar')}</legend>
+          ${camp('netNomina', t('Líquid a percebre de la nòmina'), { ajuda: explicacions.net, placeholder: t('opcional') })}
         </fieldset>
         <div class="accions">
-          ${casella('recordar', 'Recordar aquestes dades en aquest dispositiu')}
-          <button type="button" class="boto secundari" id="esborrar">Esborrar dades</button>
+          ${casella('recordar', t('Recordar aquestes dades en aquest dispositiu'))}
+          <button type="button" class="boto secundari" id="esborrar">${t('Esborrar dades')}</button>
         </div>
       </form>
       <section id="resultat" class="resultat" aria-live="polite"></section>
@@ -169,10 +171,11 @@ export function vistaNomina(el, dades) {
 }
 
 function pintaResultat(sortida, dades) {
+  const explicacions = expl();
   const resum = document.getElementById('resum-mobil');
   if (resum) resum.hidden = true;
   if (!(parseFloat(estat.salariBase) > 0)) {
-    sortida.innerHTML = `<div class="buit"><p>Introdueix almenys el <strong>salari base</strong> per veure el càlcul.</p><p class="petit">Exemple: <button type="button" class="enllac" id="exemple">carrega una nòmina d'exemple</button>.</p></div>`;
+    sortida.innerHTML = `<div class="buit"><p>${t('Introdueix almenys el <strong>salari base</strong> per veure el càlcul.')}</p><p class="petit">${t('Exemple:')} <button type="button" class="enllac" id="exemple">${t("carrega una nòmina d'exemple")}</button>.</p></div>`;
     sortida.querySelector('#exemple').addEventListener('click', () => {
       Object.assign(estat, { salariBase: '1650', complementsSalarials: '180', noSalarials: '60', pagues: '14', irpfNomina: '11', netNomina: '1551.86' });
       const vista = document.getElementById('vista');
@@ -185,77 +188,77 @@ function pintaResultat(sortida, dades) {
   const e = r.entrada;
   if (resum) {
     const alertes = r.avisos.filter((a) => a.nivell === 'alerta').length;
-    resum.textContent = `Net: ${fmt(r.net)}${alertes ? ` · ⚠ ${alertes}` : ''} — veure detall ↓`;
+    resum.textContent = `${t('Net')}: ${fmt(r.net)}${alertes ? ` · ⚠ ${alertes}` : ''} — ${t('veure detall')} ↓`;
     resum.hidden = false;
   }
 
   const filaMeritacio = (nom, valor, ajuda) => valor ? `<tr><td>${linia(nom, ajuda)}</td><td class="num">${fmt(valor)}</td></tr>` : '';
   const ssFiles = r.linies.map((l) => `
-    <tr><td>${linia(l.nom, explicacions[l.clau])}<span class="detall">${l.tipus != null ? `${pct(l.tipus)} de ${fmt(l.base)}` : `sobre ${fmt(l.base)} d'excés`}</span></td>
+    <tr><td>${linia(l.nom, explicacions[l.clau])}<span class="detall">${l.tipus != null ? t('{pct} de {base}', { pct: pct(l.tipus), base: fmt(l.base) }) : t("sobre {base} d'excés", { base: fmt(l.base) })}</span></td>
     <td class="num">−${fmt(l.import)}</td></tr>`).join('');
 
   sortida.innerHTML = `
     <div class="xifra-net">
-      <span>Líquid a percebre calculat</span>
+      <span>${t('Líquid a percebre calculat')}</span>
       <strong>${fmt(r.net)}</strong>
-      <span class="petit">Net anual aproximat: ${fmt(r.netAnual)} · Brut anual: ${fmt(r.brutAnual)}</span>
+      <span class="petit">${t('Net anual aproximat')}: ${fmt(r.netAnual)} · ${t('Brut anual')}: ${fmt(r.brutAnual)}</span>
     </div>
     ${r.avisos.map((a) => `<div class="avis ${a.nivell}">${a.text}</div>`).join('')}
 
-    <h2>Línia a línia</h2>
+    <h2>${t('Línia a línia')}</h2>
     <table class="taula">
-      <thead><tr><th colspan="2">Meritacions</th></tr></thead>
+      <thead><tr><th colspan="2">${t('Meritacions')}</th></tr></thead>
       <tbody>
-        ${filaMeritacio('Salari base', e.salariBase, explicacions.salariBase)}
-        ${filaMeritacio('Complements salarials', e.complementsSalarials, explicacions.complementsSalarials)}
-        ${filaMeritacio('Hores extres', e.horesExtres, explicacions.horesExtres)}
-        ${e.prorratejades ? filaMeritacio('Prorrata pagues extres', r.prorrata, explicacions.prorrata) : ''}
-        ${filaMeritacio('Conceptes no salarials', e.noSalarials, explicacions.noSalarials)}
-        <tr class="total"><td>Total meritat</td><td class="num">${fmt(r.totalMeritat)}</td></tr>
+        ${filaMeritacio(t('Salari base'), e.salariBase, explicacions.salariBase)}
+        ${filaMeritacio(t('Complements salarials'), e.complementsSalarials, explicacions.complementsSalarials)}
+        ${filaMeritacio(t('Hores extres'), e.horesExtres, explicacions.horesExtres)}
+        ${e.prorratejades ? filaMeritacio(t('Prorrata pagues extres'), r.prorrata, explicacions.prorrata) : ''}
+        ${filaMeritacio(t('Conceptes no salarials'), e.noSalarials, explicacions.noSalarials)}
+        <tr class="total"><td>${t('Total meritat')}</td><td class="num">${fmt(r.totalMeritat)}</td></tr>
       </tbody>
-      <thead><tr><th colspan="2">Deduccions</th></tr></thead>
+      <thead><tr><th colspan="2">${t('Deduccions')}</th></tr></thead>
       <tbody>
         ${ssFiles}
-        <tr class="subtotal"><td>Total Seguretat Social</td><td class="num">−${fmt(r.totalSS)}</td></tr>
-        <tr><td>${linia('IRPF', explicacions.irpf)}<span class="detall">${pct(r.irpf.tipus)} de ${fmt(r.irpf.base)} ${r.irpf.font === 'estimacio' ? '(estimat)' : '(de la teva nòmina)'}</span></td><td class="num">−${fmt(r.irpf.import)}</td></tr>
-        <tr class="total"><td>Total deduccions</td><td class="num">−${fmt(r.totalDeduccions)}</td></tr>
+        <tr class="subtotal"><td>${t('Total Seguretat Social')}</td><td class="num">−${fmt(r.totalSS)}</td></tr>
+        <tr><td>${linia('IRPF', explicacions.irpf)}<span class="detall">${t('{pct} de {base}', { pct: pct(r.irpf.tipus), base: fmt(r.irpf.base) })} ${r.irpf.font === 'estimacio' ? t('(estimat)') : t('(de la teva nòmina)')}</span></td><td class="num">−${fmt(r.irpf.import)}</td></tr>
+        <tr class="total"><td>${t('Total deduccions')}</td><td class="num">−${fmt(r.totalDeduccions)}</td></tr>
       </tbody>
       <tbody>
-        <tr class="total gran"><td>Líquid a percebre</td><td class="num">${fmt(r.net)}</td></tr>
+        <tr class="total gran"><td>${t('Líquid a percebre')}</td><td class="num">${fmt(r.net)}</td></tr>
       </tbody>
     </table>
 
-    <h2>Bases de cotització</h2>
+    <h2>${t('Bases de cotització')}</h2>
     <table class="taula">
-      <tr><td>${linia('Prorrata de pagues extres', explicacions.prorrata)}</td><td class="num">${fmt(r.prorrata)}</td></tr>
-      <tr><td>${linia('Base contingències comunes', explicacions.bccc)}</td><td class="num">${fmt(r.bccc)}</td></tr>
-      <tr><td>${linia('Base contingències professionals', explicacions.bccp)}</td><td class="num">${fmt(r.bccp)}</td></tr>
+      <tr><td>${linia(t('Prorrata de pagues extres'), explicacions.prorrata)}</td><td class="num">${fmt(r.prorrata)}</td></tr>
+      <tr><td>${linia(t('Base contingències comunes'), explicacions.bccc)}</td><td class="num">${fmt(r.bccc)}</td></tr>
+      <tr><td>${linia(t('Base contingències professionals'), explicacions.bccp)}</td><td class="num">${fmt(r.bccp)}</td></tr>
     </table>
 
     ${r.pagaExtra ? `
-    <h2>El mes de paga extra</h2>
-    <p>A més de la nòmina normal, cobraràs ${r.entrada.pagues - 12} pagues de ${fmt(r.pagaExtra.brut)} bruts. No cotitzen a part (ja s'ha fet cada mes amb la prorrata); només se'n descompta l'IRPF (−${fmt(r.pagaExtra.irpf)}), així que en cobraràs uns <strong>${fmt(r.pagaExtra.net)}</strong> nets cadascuna.</p>` : ''}
+    <h2>${t('El mes de paga extra')}</h2>
+    <p>${t("A més de la nòmina normal, cobraràs {n} pagues de {brut} bruts. No cotitzen a part (ja s'ha fet cada mes amb la prorrata); només se'n descompta l'IRPF (−{irpf}), així que en cobraràs uns <strong>{net}</strong> nets cadascuna.", { n: r.entrada.pagues - 12, brut: fmt(r.pagaExtra.brut), irpf: fmt(r.pagaExtra.irpf), net: fmt(r.pagaExtra.net) })}</p>` : ''}
 
-    ${detallIRPF(r.estimacioIRPF, dades)}
+    ${detallIRPF(r.estimacioIRPF)}
   `;
 }
 
-function detallIRPF(est, dades) {
-  const sit = { 1: 'situació 1 (monoparental)', 2: 'situació 2 (cònjuge amb rendes ≤ 1.500 €)', 3: 'situació 3 (altres casos)' }[est.situacio];
+function detallIRPF(est) {
+  const sit = { 1: t('situació 1 (monoparental)'), 2: t('situació 2 (cònjuge amb rendes ≤ 1.500 €)'), 3: t('situació 3 (altres casos)') }[est.situacio];
   const m = est.detallMinim;
   return `
     <details class="ajuda gran">
-      <summary>Com es calcula el teu IRPF? (algoritme de l'AEAT)</summary>
+      <summary>${t("Com es calcula el teu IRPF? (algoritme de l'AEAT)")}</summary>
       <table class="taula compacta">
         ${est.passos.map(([n, v]) => `<tr><td>${n}</td><td class="num">${fmt(v)}</td></tr>`).join('')}
-        <tr class="total"><td>Base per calcular la retenció</td><td class="num">${fmt(est.baseRetencio)}</td></tr>
-        <tr><td>Mínim personal i familiar <span class="detall">tu ${fmt(m.contribuent)} · fills ${fmt(m.descendents)} · ascendents ${fmt(m.ascendents)} · discapacitat ${fmt(m.discapacitat)}</span></td><td class="num">${fmt(est.minim)}</td></tr>
-        <tr><td>Quota anual (escala sobre la base − escala sobre el mínim)${est.limitAplicat ? " <span class=\"detall\">limitada al 43 % de l'excés sobre el límit excloent</span>" : ''}</td><td class="num">${fmt(est.quota)}</td></tr>
-        ${est.minoracio ? `<tr><td>Minoració per hipoteca anterior a 2013</td><td class="num">−${fmt(est.minoracio)}</td></tr>` : ''}
-        <tr class="total gran"><td>Tipus de retenció</td><td class="num">${pct(est.tipus)}</td></tr>
+        <tr class="total"><td>${t('Base per calcular la retenció')}</td><td class="num">${fmt(est.baseRetencio)}</td></tr>
+        <tr><td>${t('Mínim personal i familiar')} <span class="detall">${t('tu')} ${fmt(m.contribuent)} · ${t('fills')} ${fmt(m.descendents)} · ${t('ascendents')} ${fmt(m.ascendents)} · ${t('discapacitat')} ${fmt(m.discapacitat)}</span></td><td class="num">${fmt(est.minim)}</td></tr>
+        <tr><td>${t('Quota anual (escala sobre la base − escala sobre el mínim)')}${est.limitAplicat ? ` <span class="detall">${t("limitada al 43 % de l'excés sobre el límit excloent")}</span>` : ''}</td><td class="num">${fmt(est.quota)}</td></tr>
+        ${est.minoracio ? `<tr><td>${t('Minoració per hipoteca anterior a 2013')}</td><td class="num">−${fmt(est.minoracio)}</td></tr>` : ''}
+        <tr class="total gran"><td>${t('Tipus de retenció')}</td><td class="num">${pct(est.tipus)}</td></tr>
       </table>
-      <p class="petit">Calculat com a ${sit}, ${est.numDescendents} descendent(s) i ${est.numAscendents} ascendent(s). Límit per sota del qual no hi ha retenció: ${fmt(est.llindar)}.
-      No inclou regularitzacions de mig any, altres pagadors, rendiments irregulars, Ceuta/Melilla/La Palma ni pensionistes o desocupats. El resultat final el dona la declaració de la renda.</p>
+      <p class="petit">${t('Calculat com a {sit}, {d} descendent(s) i {a} ascendent(s). Límit per sota del qual no hi ha retenció: {llindar}.', { sit, d: est.numDescendents, a: est.numAscendents, llindar: fmt(est.llindar) })}
+      ${t('No inclou regularitzacions de mig any, altres pagadors, rendiments irregulars, Ceuta/Melilla/La Palma ni pensionistes o desocupats. El resultat final el dona la declaració de la renda.')}</p>
     </details>`;
 }
 
@@ -270,28 +273,28 @@ export function vistaSimular(el, dades) {
   const teBase = parseFloat(estat.salariBase) > 0;
 
   el.append(h(`
-    <h1>Simular situacions</h1>
-    ${teBase ? '<p class="intro">Partim de les dades de la teva nòmina. Mou els controls per veure què canviaria.</p>'
-      : '<div class="avis info">Primer omple la teva nòmina a <a href="#/nomina">Comprovar nòmina</a>. Mentrestant, fem servir un exemple de 1.800 € bruts en 14 pagues.</div>'}
+    <h1>${t('Simular situacions')}</h1>
+    ${teBase ? `<p class="intro">${t('Partim de les dades de la teva nòmina. Mou els controls per veure què canviaria.')}</p>`
+      : `<div class="avis info">${t('Primer omple la teva nòmina a <a href="#/nomina">Comprovar nòmina</a>. Mentrestant, fem servir un exemple de 1.800 € bruts en 14 pagues.')}</div>`}
     <div class="preselec">
-      <button type="button" class="boto secundari" data-p="augment">Si em pugen 100 € bruts</button>
-      <button type="button" class="boto secundari" data-p="jornada">Reducció de jornada al 80 %</button>
-      <button type="button" class="boto secundari" data-p="prorrateig">Pagues prorratejades o no</button>
-      <button type="button" class="boto secundari" data-p="reset">Tornar a l'inici</button>
+      <button type="button" class="boto secundari" data-p="augment">${t('Si em pugen 100 € bruts')}</button>
+      <button type="button" class="boto secundari" data-p="jornada">${t('Reducció de jornada al 80 %')}</button>
+      <button type="button" class="boto secundari" data-p="prorrateig">${t('Pagues prorratejades o no')}</button>
+      <button type="button" class="boto secundari" data-p="reset">${t("Tornar a l'inici")}</button>
     </div>
     <div class="dues-columnes">
       <form class="formulari" onsubmit="return false">
         <fieldset>
-          <legend>Canvis</legend>
+          <legend>${t('Canvis')}</legend>
           <div class="camp">
-            <label for="s-augment">Augment de sou brut mensual</label>
+            <label for="s-augment">${t('Augment de sou brut mensual')}</label>
             <div class="entrada"><input id="s-augment" type="number" step="10" value="0"><span class="sufix">€</span></div>
           </div>
           <div class="camp">
-            <label for="s-jornada">Jornada: <output id="s-jornada-val">${sim.jornada} %</output></label>
+            <label for="s-jornada">${t('Jornada')}: <output id="s-jornada-val">${sim.jornada} %</output></label>
             <input id="s-jornada" type="range" min="10" max="100" step="5" value="${sim.jornada}">
           </div>
-          <label class="casella"><input id="s-prorrateig" type="checkbox" ${sim.prorratejades ? 'checked' : ''}> Pagues extres prorratejades</label>
+          <label class="casella"><input id="s-prorrateig" type="checkbox" ${sim.prorratejades ? 'checked' : ''}> ${t('Pagues extres prorratejades')}</label>
         </fieldset>
       </form>
       <section id="sim-resultat" class="resultat" aria-live="polite"></section>
@@ -360,46 +363,47 @@ function pintaSimulacio(sortida, dades, base, sim) {
   const difBrut = brutMesNou - brutMesAra;
   let frase = '';
   if (sim.augment && difBrut > 0) {
-    frase = `De cada euro brut que puja, te'n queden uns <strong>${Math.round((difNet / difBrut) * 100)} cèntims</strong> nets cada mes.`;
+    frase = t("De cada euro brut que puja, te'n queden uns <strong>{c} cèntims</strong> nets cada mes.", { c: Math.round((difNet / difBrut) * 100) });
   }
+  const difAny = nou.netAnual - ara.netAnual;
 
   sortida.innerHTML = `
     <div class="xifra-net">
-      <span>Net mensual simulat</span>
+      <span>${t('Net mensual simulat')}</span>
       <strong>${fmt(nou.net)}</strong>
-      <span class="petit">${difNet >= 0 ? '+' : ''}${fmt(difNet)} al mes · ${nou.netAnual - ara.netAnual >= 0 ? '+' : ''}${fmt(nou.netAnual - ara.netAnual)} l'any</span>
+      <span class="petit">${difNet >= 0 ? '+' : ''}${fmt(difNet)} ${t('al mes')} · ${difAny >= 0 ? '+' : ''}${fmt(difAny)} ${t("l'any")}</span>
     </div>
     ${frase ? `<div class="avis info">${frase}</div>` : ''}
-    ${sim.prorratejades !== !!base.prorratejades ? '<div class="avis info">Prorratejar les pagues no canvia el que cobres a l\'any: només com es reparteix. El net mensual puja, però deixes de cobrar les pagues de juny i desembre.</div>' : ''}
-    ${sim.jornada < (Number(base.jornada) || 100) ? '<div class="avis info">En una reducció de jornada per cura de fills o familiars, durant uns anys la Seguretat Social et computa la cotització com si treballessis a jornada completa per a la jubilació i altres prestacions.</div>' : ''}
+    ${sim.prorratejades !== !!base.prorratejades ? `<div class="avis info">${t("Prorratejar les pagues no canvia el que cobres a l'any: només com es reparteix. El net mensual puja, però deixes de cobrar les pagues de juny i desembre.")}</div>` : ''}
+    ${sim.jornada < (Number(base.jornada) || 100) ? `<div class="avis info">${t('En una reducció de jornada per cura de fills o familiars, durant uns anys la Seguretat Social et computa la cotització com si treballessis a jornada completa per a la jubilació i altres prestacions.')}</div>` : ''}
     <table class="taula comparativa">
-      <thead><tr><th></th><th class="num">Ara</th><th class="num">Simulat</th><th class="num">Diferència</th></tr></thead>
+      <thead><tr><th></th><th class="num">${t('Ara')}</th><th class="num">${t('Simulat')}</th><th class="num">${t('Diferència')}</th></tr></thead>
       <tbody>
-        ${fila('Brut del mes', brutMesAra, brutMesNou)}
-        ${fila('Seguretat Social', ara.totalSS, nou.totalSS, -1)}
+        ${fila(t('Brut del mes'), brutMesAra, brutMesNou)}
+        ${fila(t('Seguretat Social'), ara.totalSS, nou.totalSS, -1)}
         ${fila(`IRPF (${pct(ara.irpf.tipus)} → ${pct(nou.irpf.tipus)})`, ara.irpf.import, nou.irpf.import, -1)}
-        ${fila('Net del mes', ara.net, nou.net)}
-        ${fila('Brut anual', ara.brutAnual, nou.brutAnual)}
-        ${fila('Net anual', ara.netAnual, nou.netAnual)}
+        ${fila(t('Net del mes'), ara.net, nou.net)}
+        ${fila(t('Brut anual'), ara.brutAnual, nou.brutAnual)}
+        ${fila(t('Net anual'), ara.netAnual, nou.netAnual)}
       </tbody>
     </table>
-    <p class="petit">L'IRPF simulat és una estimació. ${base.irpfNomina ? 'Partim del teu percentatge actual i hi sumem la variació estimada.' : ''}</p>
+    <p class="petit">${t("L'IRPF simulat és una estimació.")} ${base.irpfNomina ? t('Partim del teu percentatge actual i hi sumem la variació estimada.') : ''}</p>
   `;
 }
 
 // ---------- Glossari ----------
 export function vistaGlossari(el) {
   el.append(h(`
-    <h1>Glossari</h1>
-    <div class="camp cerca"><label for="cerca">Cerca un terme</label><input id="cerca" type="search" placeholder="p. ex. base, IRPF, prorrata..."></div>
+    <h1>${t('Glossari')}</h1>
+    <div class="camp cerca"><label for="cerca">${t('Cerca un terme')}</label><input id="cerca" type="search" placeholder="${t('p. ex. base, IRPF, prorrata...')}"></div>
     <dl class="glossari" id="llista-glossari">
-      ${glossari.map(([t, d]) => `<div class="terme"><dt>${t}</dt><dd>${d}</dd></div>`).join('')}
+      ${gloss().map(([terme, d]) => `<div class="terme"><dt>${terme}</dt><dd>${d}</dd></div>`).join('')}
     </dl>
   `));
   const cerca = el.querySelector('#cerca');
   const treuAccents = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   cerca.addEventListener('input', () => {
     const q = treuAccents(cerca.value);
-    el.querySelectorAll('.terme').forEach((t) => { t.hidden = q && !treuAccents(t.textContent).includes(q); });
+    el.querySelectorAll('.terme').forEach((x) => { x.hidden = q && !treuAccents(x.textContent).includes(q); });
   });
 }

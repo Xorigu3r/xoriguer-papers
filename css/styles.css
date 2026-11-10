@@ -207,3 +207,13 @@ details.linia p { margin: .35rem 0 .2rem; font-size: .85rem; color: var(--text-s
 .contingut { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .avis-global { margin: 1rem 16px 0; }
 @media (min-width: 900px) { .avis-global { margin: 1.25rem 2rem 0; } }
+
+/* Selector d'idioma */
+.barra-dreta { display: flex; align-items: center; gap: .6rem; }
+.idioma { display: inline-flex; border: 1px solid var(--vora); border-radius: 999px; overflow: hidden; }
+.idioma button {
+  background: transparent; color: var(--text-suau); border: 0; padding: .35rem .7rem;
+  font: inherit; font-size: .8rem; font-weight: 700; letter-spacing: .05em; cursor: pointer;
+}
+.idioma button[aria-pressed="true"] { background: var(--primari); color: var(--sobre-primari); }
+.idioma button:focus-visible { outline: 2px solid var(--primari); outline-offset: -2px; }

@@ -2,6 +2,8 @@
 // L'IRPF segueix l'algoritme oficial de l'AEAT (procediment general, sense regularitzacions).
 // Tot es calcula al dispositiu; res no surt d'aquí.
 
+import { t } from '../i18n.js';
+
 const r2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
 const trunca2 = (n) => Math.floor((n + 1e-9) * 100) / 100;
 const num = (v) => {
@@ -91,13 +93,13 @@ export function calculaNomina(entrada, dades) {
   const tipusHE = e.horesExtresForcaMajor ? c.horesExtresForcaMajor : c.horesExtresAltres;
 
   const linies = [
-    { clau: 'cc', nom: 'Contingències comunes', base: bccc, tipus: c.contingenciesComunes },
-    { clau: 'atur', nom: 'Atur (desocupació)', base: bccp, tipus: tipusAtur },
-    { clau: 'fp', nom: 'Formació professional', base: bccp, tipus: c.formacioProfessional },
-    { clau: 'mei', nom: 'MEI (equitat intergeneracional)', base: bccc, tipus: c.mei },
+    { clau: 'cc', nom: t('Contingències comunes'), base: bccc, tipus: c.contingenciesComunes },
+    { clau: 'atur', nom: t('Atur (desocupació)'), base: bccp, tipus: tipusAtur },
+    { clau: 'fp', nom: t('Formació professional'), base: bccp, tipus: c.formacioProfessional },
+    { clau: 'mei', nom: t('MEI (equitat intergeneracional)'), base: bccc, tipus: c.mei },
   ];
   if (e.horesExtres > 0) {
-    linies.push({ clau: 'he', nom: 'Hores extres', base: r2(e.horesExtres), tipus: tipusHE });
+    linies.push({ clau: 'he', nom: t('Hores extres'), base: r2(e.horesExtres), tipus: tipusHE });
   }
 
   // Cotització addicional de solidaritat: per trams sobre la part que supera la base màxima
@@ -111,7 +113,7 @@ export function calculaNomina(entrada, dades) {
       import_ += tram * t.treballador / 100;
       anterior = sostre;
     }
-    linies.push({ clau: 'solidaritat', nom: 'Cotització de solidaritat', base: r2(retribucioTotal - b.maximaMensual), tipus: null, importFix: r2(import_) });
+    linies.push({ clau: 'solidaritat', nom: t('Cotització de solidaritat'), base: r2(retribucioTotal - b.maximaMensual), tipus: null, importFix: r2(import_) });
   }
 
   for (const l of linies) l.import = l.importFix ?? r2(l.base * l.tipus / 100);
@@ -261,13 +263,13 @@ export function estimaIRPF(entrada, dades, ssAnual, any = dades.any) {
   }
 
   passos.push(
-    ['Retribucions anuals', retrib],
-    ['Cotitzacions a la Seguretat Social', -cotitzacions],
-    ['Altres despeses deduïbles', -altresDespeses],
-    ['Reducció per rendiments del treball', -red20],
+    [t('Retribucions anuals'), retrib],
+    [t('Cotitzacions a la Seguretat Social'), -cotitzacions],
+    [t('Altres despeses deduïbles'), -altresDespeses],
+    [t('Reducció per rendiments del treball'), -red20],
   );
-  if (redMesDeDos) passos.push(['Reducció per més de dos descendents', -redMesDeDos]);
-  if (e.pensioCompensatoria) passos.push(['Pensió compensatòria al cònjuge', -e.pensioCompensatoria]);
+  if (redMesDeDos) passos.push([t('Reducció per més de dos descendents'), -redMesDeDos]);
+  if (e.pensioCompensatoria) passos.push([t('Pensió compensatòria al cònjuge'), -e.pensioCompensatoria]);
 
   return {
     brutAnual: retrib, ssAnual: cotitzacions, altresDespeses: r2(altresDespeses), reduccio: red20,
@@ -284,30 +286,37 @@ function avisos(res, dades) {
 
   if (e.netNomina != null) {
     const dif = r2(e.netNomina - res.net);
-    if (Math.abs(dif) <= 1) a.push({ nivell: 'ok', text: `El líquid de la teva nòmina quadra amb el càlcul (diferència de ${fmt(dif)}).` });
+    if (Math.abs(dif) <= 1) a.push({ nivell: 'ok', text: t('El líquid de la teva nòmina quadra amb el càlcul (diferència de {dif}).', { dif: fmt(dif) }) });
     else a.push({
       nivell: 'alerta',
-      text: `El líquid de la nòmina (${fmt(e.netNomina)}) i el calculat (${fmt(res.net)}) es diferencien en ${fmt(dif)}. ` +
-        'Pot ser per conceptes que no has introduït (embargaments, bestretes, espècie, quota sindical...), per un mes de paga extra o per un error. Revisa-ho línia a línia.',
+      text: t('El líquid de la nòmina ({nomina}) i el calculat ({calc}) es diferencien en {dif}. Pot ser per conceptes que no has introduït (embargaments, bestretes, espècie, quota sindical...), per un mes de paga extra o per un error. Revisa-ho línia a línia.',
+        { nomina: fmt(e.netNomina), calc: fmt(res.net), dif: fmt(dif) }),
     });
   }
 
   if (e.irpfNomina != null) {
-    if (e.irpfNomina + 2 < est.tipus) a.push({ nivell: 'alerta', text: `El teu IRPF (${pc(e.irpfNomina)}) sembla baix respecte al que surt amb el teu model 145 (${pc(est.tipus)}). Potser et tocarà pagar a la declaració de la renda. Comprova que l'empresa té el model 145 actualitzat.` });
-    else if (e.irpfNomina > est.tipus + 3) a.push({ nivell: 'info', text: `El teu IRPF (${pc(e.irpfNomina)}) és més alt que el que surt amb el teu model 145 (${pc(est.tipus)}). Si no hi ha cap motiu (has demanat més retenció, tens altres ingressos, l'empresa no té el 145 al dia...), probablement et tornaran diners a la renda.` });
-    else a.push({ nivell: 'ok', text: `El teu IRPF (${pc(e.irpfNomina)}) és coherent amb el que surt amb el teu model 145 (${pc(est.tipus)}).` });
+    const v = { teu: pc(e.irpfNomina), est: pc(est.tipus) };
+    if (e.irpfNomina + 2 < est.tipus) a.push({ nivell: 'alerta', text: t("El teu IRPF ({teu}) sembla baix respecte al que surt amb el teu model 145 ({est}). Potser et tocarà pagar a la declaració de la renda. Comprova que l'empresa té el model 145 actualitzat.", v) });
+    else if (e.irpfNomina > est.tipus + 3) a.push({ nivell: 'info', text: t("El teu IRPF ({teu}) és més alt que el que surt amb el teu model 145 ({est}). Si no hi ha cap motiu (has demanat més retenció, tens altres ingressos, l'empresa no té el 145 al dia...), probablement et tornaran diners a la renda.", v) });
+    else a.push({ nivell: 'ok', text: t('El teu IRPF ({teu}) és coherent amb el que surt amb el teu model 145 ({est}).', v) });
   }
-  if (e.situacioFamiliar === '1' && est.numDescendents === 0) a.push({ nivell: 'alerta', text: 'La situació familiar 1 exigeix tenir almenys un fill que doni dret a mínim. S\'ha calculat com a situació 3.' });
-  if (est.minimAplicat) a.push({ nivell: 'info', text: 'Contracte de menys d\'un any: la retenció mínima és del 2 %.' });
-  if (est.exempt) a.push({ nivell: 'info', text: `Amb un brut anual de ${fmt(est.brutAnual)} estàs per sota del límit de retenció per a la teva situació (${fmt(est.llindar)}): no t'han de retenir IRPF${e.contracteMenysUnAny ? ', excepte el 2 % mínim dels contractes de menys d\'un any' : ''}.` });
-  if (e.prestecHabitatge && est.minoracio > 0) a.push({ nivell: 'info', text: `Per la hipoteca d'abans del 2013, la retenció es redueix ${fmt(est.minoracio)} l'any.` });
+  if (e.situacioFamiliar === '1' && est.numDescendents === 0) a.push({ nivell: 'alerta', text: t("La situació familiar 1 exigeix tenir almenys un fill que doni dret a mínim. S'ha calculat com a situació 3.") });
+  if (est.minimAplicat) a.push({ nivell: 'info', text: t("Contracte de menys d'un any: la retenció mínima és del 2 %.") });
+  if (est.exempt) {
+    a.push({ nivell: 'info', text: e.contracteMenysUnAny
+      ? t("Amb un brut anual de {brut} estàs per sota del límit de retenció per a la teva situació ({llindar}): no t'han de retenir IRPF, excepte el 2 % mínim dels contractes de menys d'un any.", { brut: fmt(est.brutAnual), llindar: fmt(est.llindar) })
+      : t("Amb un brut anual de {brut} estàs per sota del límit de retenció per a la teva situació ({llindar}): no t'han de retenir IRPF.", { brut: fmt(est.brutAnual), llindar: fmt(est.llindar) }) });
+  }
+  if (e.prestecHabitatge && est.minoracio > 0) a.push({ nivell: 'info', text: t("Per la hipoteca d'abans del 2013, la retenció es redueix {import} l'any.", { import: fmt(est.minoracio) }) });
 
   const smiProporcional = dades.smi.anual * e.jornada / 100;
   if (est.brutAnual > 0 && est.brutAnual < smiProporcional - 1) {
-    a.push({ nivell: 'alerta', text: `El brut anual (${fmt(est.brutAnual)}) és inferior al salari mínim ${e.jornada < 100 ? `proporcional a la teva jornada (${fmt(smiProporcional)})` : `(${fmt(dades.smi.anual)})`}. Consulta-ho amb un sindicat o la gestoria.` });
+    a.push({ nivell: 'alerta', text: e.jornada < 100
+      ? t('El brut anual ({brut}) és inferior al salari mínim proporcional a la teva jornada ({smi}). Consulta-ho amb un sindicat o la gestoria.', { brut: fmt(est.brutAnual), smi: fmt(smiProporcional) })
+      : t('El brut anual ({brut}) és inferior al salari mínim ({smi}). Consulta-ho amb un sindicat o la gestoria.', { brut: fmt(est.brutAnual), smi: fmt(dades.smi.anual) }) });
   }
-  if (res.bccc >= dades.basesCotitzacio.maximaMensual) a.push({ nivell: 'info', text: 'Cobres per sobre de la base màxima: cotitzes per la base màxima i, per la resta, la cotització de solidaritat.' });
-  if (res.bccc === res.minima && e.salariBase + e.complementsSalarials + res.prorrata < res.minima) a.push({ nivell: 'info', text: 'La teva remuneració és inferior a la base mínima del teu grup; es cotitza per la mínima.' });
+  if (res.bccc >= dades.basesCotitzacio.maximaMensual) a.push({ nivell: 'info', text: t('Cobres per sobre de la base màxima: cotitzes per la base màxima i, per la resta, la cotització de solidaritat.') });
+  if (res.bccc === res.minima && e.salariBase + e.complementsSalarials + res.prorrata < res.minima) a.push({ nivell: 'info', text: t('La teva remuneració és inferior a la base mínima del teu grup; es cotitza per la mínima.') });
   return a;
 }
 
