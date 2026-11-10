@@ -1,4 +1,5 @@
 import { vistaInici, vistaNomina, vistaSimular, vistaGlossari } from './nomina/vistes.js';
+import { vistaNominaExemple } from './nomina/exemple.js';
 import { vistaLlum, vistaSimularLlum } from './llum/vistes.js';
 import { t, idioma, canviaIdioma, locale } from './i18n.js';
 
@@ -52,6 +53,7 @@ document.querySelectorAll('[data-idioma]').forEach((b) => b.addEventListener('cl
 const rutes = {
   '/': vistaInici,
   '/nomina': vistaNomina,
+  '/nomina/exemple': vistaNominaExemple,
   '/simular': vistaSimular,
   '/glossari': vistaGlossari,
   '/llum': vistaLlum,

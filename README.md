@@ -8,6 +8,7 @@ Tot es calcula al dispositiu: no hi ha servidor ni s'envia cap dada.
 | Mòdul | Estat |
 |---|---|
 | Nòmina: comprovar, explicar línia a línia, simular, glossari, avisos | ✅ v0.1 (formulari, sense OCR) |
+| Nòmina explicada: nòmina d'exemple (model oficial) amb punts clicables | ✅ v0.1 |
 | Factura de llum (2.0TD): comprovar, on van els diners, potència, simular i comparar ofertes | ✅ v0.1 (formulari, sense OCR) |
 | Aigua, gas, IBI | Més endavant |
 | OCR (Tesseract.js) | Al final |
@@ -39,6 +40,7 @@ npm test
 - `js/nomina/vistes.js` — pantalles (comprovar, simular, glossari).
 - `data/index.json` — anys disponibles. L'app fa servir l'any en curs o, si encara no hi és, l'últim i ho avisa.
 - `js/nomina/model145.js` — formulari del model 145.
+- `js/nomina/exemple.js` — nòmina explicada: exemple amb el format oficial i punts clicables; les xifres es calculen amb el motor i les dades de l'any.
 - `data/llum-AAAA.json` i `js/llum/` — factura de llum: peatges i càrrecs del BOE, impostos per dates, motor de càlcul i pantalles.
 - `scripts/vigila-fonts.mjs` — vigila el BOE i l'AEAT i avisa de normes noves (`npm run vigila`).
 - `scripts/valida-dades.mjs` — detecta errors als JSON de dades (s'executa amb `npm test`).

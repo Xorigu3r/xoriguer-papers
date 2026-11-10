@@ -44,6 +44,11 @@ export function vistaInici(el) {
         <h2>${t('Nòmina')}</h2>
         <p>${t('Comprova si els càlculs quadren i entén cada línia: cotitzacions, IRPF, pagues extres.')}</p>
       </a>
+      <a class="targeta" href="#/nomina/exemple">
+        <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5h15l6 6v24H10z"/><path d="M15 15h8M15 21h11M15 27h6" stroke="#f5efe6"/><circle cx="29" cy="29" r="5" fill="#ff8a1f" stroke="none"/></svg>
+        <h2>${t('Nòmina explicada')} <span class="etiqueta">${t('Nou')}</span></h2>
+        <p>${t("Una nòmina d'exemple amb punts: toca cada concepte i et diu què és.")}</p>
+      </a>
       <a class="targeta" href="#/simular">
         <svg class="targeta-icona" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" fill="none" stroke="#ff8a1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="24" height="30" rx="4"/><rect x="12" y="9" width="16" height="7" rx="1.5"/><path d="M13 22h2M19 22h2M25 22h2M13 28h2M19 28h2M25 28h2" stroke="#f5efe6"/></svg>
         <h2>${t('Simulador')}</h2>
@@ -85,7 +90,7 @@ export function vistaNomina(el, dades) {
   const explicacions = expl();
   el.append(h(`
     <h1>${t('Comprovar la nòmina')}</h1>
-    <p class="intro">${t("Copia les xifres de la teva nòmina d'un mes normal (sense paga extra). Els resultats s'actualitzen mentre escrius.")}</p>
+    <p class="intro">${t("Copia les xifres de la teva nòmina d'un mes normal (sense paga extra). Els resultats s'actualitzen mentre escrius.")} <a href="#/nomina/exemple">${t('No saps on és cada cosa? Mira la nòmina explicada.')}</a></p>
     <div class="dues-columnes">
       <form id="form-nomina" class="formulari" autocomplete="off" onsubmit="return false">
         <fieldset>
