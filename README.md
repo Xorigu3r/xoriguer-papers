@@ -42,7 +42,7 @@ npm test
 - `scripts/valida-dades.mjs` — detecta errors als JSON de dades (s'executa amb `npm test`).
 - `.github/workflows/` — vigilant diari (obre una incidència a GitHub) i validació a cada canvi.
 - `REVISIO-ANUAL.md` — què revisar cada any i on trobar-ho.
-- `icons/` — logo (xoriguer sobre una nòmina), versió maskable per a Android i icona del mòdul de nòmina.
+- `icons/` — `falco.png` és el falcó original de la família Xoriguer (fons transparent). Les icones de l'app es generen amb `python scripts/genera-icones.py` (falcó a dalt + nòmina en línia taronja).
 - `sw.js` — funcionament sense connexió. Puja `VERSIO` en cada publicació.
 
 ## IRPF
