@@ -1,5 +1,5 @@
 // Service worker: l'app funciona sense connexió. Canvia VERSIO quan publiquis canvis.
-const VERSIO = 'pdc-v10';
+const VERSIO = 'pdc-v11';
 const FITXERS = [
   './',
   'index.html',

@@ -44,6 +44,18 @@ for (const f of fitxers) {
   enRang(f, 'horesExtresForcaMajor', c.horesExtresForcaMajor, 0, 5);
   enRang(f, 'horesExtresAltres', c.horesExtresAltres, 0, 7);
 
+  // Aportació de l'empresa (opcional; només la fa servir la nòmina explicada)
+  const ce = d.cotitzacioEmpresa;
+  if (ce) {
+    enRang(f, 'cotitzacioEmpresa.contingenciesComunes', ce.contingenciesComunes, 18, 30);
+    enRang(f, 'cotitzacioEmpresa.aturIndefinit', ce.aturIndefinit, 3, 8);
+    enRang(f, 'cotitzacioEmpresa.aturTemporal', ce.aturTemporal, 3, 9);
+    enRang(f, 'cotitzacioEmpresa.fogasa', ce.fogasa, 0, 1);
+    enRang(f, 'cotitzacioEmpresa.formacioProfessional', ce.formacioProfessional, 0, 2);
+    enRang(f, 'cotitzacioEmpresa.mei', ce.mei, 0, 2);
+    enRang(f, 'cotitzacioEmpresa.atEpExemple', ce.atEpExemple, 0, 8);
+  }
+
   const trams = d.cotitzacioSolidaritat?.trams ?? [];
   if (trams.length === 0) err(f, 'falten els trams de solidaritat');
   trams.forEach((t, i) => enRang(f, `solidaritat.trams[${i}].treballador`, t.treballador, 0, 1));

@@ -40,6 +40,16 @@
     "horesExtresForcaMajor": 2.00,
     "horesExtresAltres": 4.70
   },
+  "cotitzacioEmpresa": {
+    "nota": "Només per a la nòmina explicada. AT i EP depèn de l'activitat de l'empresa (tarifa de la DA 4a de la Llei 42/2006); el valor és un exemple.",
+    "contingenciesComunes": 23.60,
+    "aturIndefinit": 5.50,
+    "aturTemporal": 6.70,
+    "fogasa": 0.20,
+    "formacioProfessional": 0.60,
+    "mei": 0.75,
+    "atEpExemple": 1.50
+  },
   "cotitzacioSolidaritat": {
     "trams": [
       { "fins": 5611.32, "treballador": 0.19 },
