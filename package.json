@@ -1,0 +1,13 @@
+{
+  "name": "papers-de-casa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Entén els teus papers: nòmina, factura de llum... PWA local, sense servidor.",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "test": "node scripts/valida-dades.mjs && node --test tests/*.test.js",
+    "valida": "node scripts/valida-dades.mjs",
+    "vigila": "node scripts/vigila-fonts.mjs"
+  }
+}

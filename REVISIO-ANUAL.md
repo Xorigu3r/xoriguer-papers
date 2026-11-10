@@ -1,0 +1,36 @@
+# Revisió anual de les dades
+
+L'app no llegeix el BOE directament: un **vigilant** (GitHub Actions, cada dia) avisa amb una
+incidència quan surt una norma que pot canviar les xifres. Llavors una persona les revisa i les posa al JSON.
+
+## Calendari habitual
+
+| Quan | Què surt | Què canvia a `data/nomina-AAAA.json` |
+|---|---|---|
+| Gener–febrer | Reial decret de l'**SMI** | `smi` |
+| Gener | **Algoritme de retencions** de l'AEAT (i versions noves si canvia la llei a mig any) | `irpf.*` |
+| Gener–abril | **Ordre de cotització** (o RDL de pròrroga) | `basesCotitzacio`, `cotitzacioTreballador`, `cotitzacioSolidaritat` |
+| Quan toqui | Canvis al **RIRPF** o a la Llei 35/2006 | `irpf.*` |
+
+Fins que surt l'ordre de cotització, molts anys es fan servir provisionalment les xifres de l'any anterior.
+
+## Passos per a un any nou
+
+1. Copia el fitxer de l'any anterior: `data/nomina-2027.json`, canvia `"any"` i posa l'any a `data/index.json`.
+2. Revisa cada valor amb la font oficial i actualitza `"revisat"` i `"fonts"`:
+   - **SMI** → Reial decret de l'any (BOE).
+   - **Base màxima, bases mínimes per grup, percentatges, MEI, solidaritat** → Ordre de cotització (BOE), articles de bases i tipus.
+   - **IRPF**: escala, mínims, reducció per rendiments del treball, despeses, límits excloents (taula 1), límit del 43 %,
+     hipoteca → PDF «Algoritmo de cálculo» a la sede de l'AEAT (Programas de ayuda → Retenciones).
+   - Per llegir el PDF: `pdftotext -layout Algoritmo.pdf -`.
+3. Executa `npm test`. El validador comprova que no hi hagi errors de tecleig (p. ex. 47 en lloc de 4,7).
+4. Comprova 2 o 3 casos amb el **simulador de retencions de l'AEAT** i, si cal, afegeix-los com a tests.
+5. Puja `VERSIO` a `sw.js` i publica. Les apps instal·lades descarreguen les dades noves en obrir-se amb connexió.
+6. Tanca la incidència del vigilant.
+
+## Vigilant
+
+- Local: `npm run vigila` (opció `--des-de=AAAAMMDD` per revisar dies concrets, `--sense-desar` per no tocar l'estat).
+- Mira la secció I del BOE (disposicions generals) i la pàgina de retencions de l'AEAT.
+- Desa el que ja ha vist a `scripts/estat-vigilancia.json` perquè no avisi dues vegades.
+- També avisa si comença un any i no hi ha `data/nomina-AAAA.json`.

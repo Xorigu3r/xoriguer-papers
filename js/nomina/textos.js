@@ -1,0 +1,42 @@
+// Explicacions en llenguatge planer de cada línia i glossari.
+
+export const explicacions = {
+  salariBase: 'El sou mínim que et correspon per la teva categoria segons el conveni. És la part fixa principal.',
+  complementsSalarials: 'Diners extra que formen part del sou: antiguitat, plus de nocturnitat, de perillositat, de productivitat, incentius... Cotitzen i paguen IRPF.',
+  noSalarials: 'Diners que et paguen per compensar despeses, no per la feina: dietes, plus de transport o distància, quilometratge. Dins dels límits legals no cotitzen ni paguen IRPF.',
+  horesExtres: 'Hores treballades per sobre de la jornada pactada. Cotitzen a part i també paguen IRPF.',
+  prorrata: 'Si tens 14 pagues, cada mes es cotitza la part proporcional de les pagues extres (1/6 de la paga si són 2). Si estan prorratejades, també te les paguen cada mes.',
+  cc: 'Contingències comunes: la part més gran de la cotització. Paga les pensions, la baixa per malaltia comuna i altres prestacions.',
+  atur: 'Cotització per desocupació. És el que et dona dret a cobrar l\'atur si perds la feina. Si el contracte és temporal, el percentatge és una mica més alt.',
+  fp: 'Formació professional: finança cursos de formació per a treballadors i aturats.',
+  mei: 'Mecanisme d\'Equitat Intergeneracional: un petit percentatge que va a un fons de reserva per garantir les pensions futures. Puja una mica cada any fins al 2029.',
+  he: 'Cotització específica de les hores extres. Si són per força major (incendis, inundacions...) el percentatge és més baix.',
+  solidaritat: 'Des del 2025, qui cobra per sobre de la base màxima cotitza també un petit percentatge per la part que la supera.',
+  irpf: 'Impost sobre la renda. No és un cost final: és una bestreta del que pagaràs a la declaració de la renda. Si et retenen poc, pagaràs a la renda; si et retenen molt, te\'n tornaran.',
+  bccc: 'Base de cotització per contingències comunes: el salari mensual que es fa servir per calcular la cotització, incloent-hi la part proporcional de les pagues extres.',
+  bccp: 'Base per contingències professionals: com l\'anterior però amb les hores extres. Es fa servir per a atur, formació i MEI.',
+  net: 'Líquid a percebre: el que realment t\'ingressen al compte.',
+};
+
+export const glossari = [
+  ['Meritacions', 'Tot el que guanyes aquell mes abans de descomptar res: salari base, complements, hores extres, dietes... A les nòmines en castellà, "devengos".'],
+  ['Deduccions', 'El que et descompten: cotitzacions a la Seguretat Social, IRPF i, si n\'hi ha, bestretes, embargaments o quota sindical.'],
+  ['Líquid a percebre', 'Meritacions menys deduccions. El que cobres de veritat.'],
+  ['Salari brut', 'El que cobres abans de descomptes. Quan et diuen "30.000 € bruts l\'any" vol dir la suma de totes les meritacions de l\'any.'],
+  ['Base de cotització', 'Import sobre el qual s\'apliquen els percentatges de la Seguretat Social. Té un mínim i un màxim cada any.'],
+  ['Base màxima / mínima', 'Límits de la base de cotització. Per molt que cobris, no cotitzes per sobre de la màxima (excepte la cotització de solidaritat); si cobres poc, cotitzes almenys per la mínima.'],
+  ['Prorrata de pagues extres', 'La part mensual de les pagues extres. Si cobres 14 pagues, cada mes cotitzes una mica per les dues extres.'],
+  ['Pagues prorratejades', 'Quan, en lloc de cobrar dues pagues extres a l\'estiu i al Nadal, te les reparteixen en 12 mensualitats.'],
+  ['Contingències comunes', 'Situacions no relacionades amb la feina: malaltia, jubilació, maternitat/paternitat...'],
+  ['Contingències professionals', 'Accidents de treball i malalties professionals. Aquesta part la paga només l\'empresa.'],
+  ['MEI', 'Mecanisme d\'Equitat Intergeneracional. Cotització addicional per al fons de reserva de les pensions.'],
+  ['IRPF', 'Impost sobre la Renda de les Persones Físiques. A la nòmina, l\'empresa en fa una retenció a compte.'],
+  ['Retenció', 'Diners que l\'empresa guarda de la teva nòmina i ingressa a Hisenda en nom teu, a compte de la declaració de la renda.'],
+  ['Model 145', 'Formulari on comuniques a l\'empresa la teva situació familiar (fills, discapacitat, etc.) perquè calculi bé la retenció.'],
+  ['Regularització', 'Quan l\'empresa ajusta el percentatge d\'IRPF a mig any perquè ha canviat el teu salari o situació. Pot fer que un mes et retinguin més.'],
+  ['Espècie', 'Retribucions que no són diners: cotxe d\'empresa, assegurança mèdica, tiquets restaurant per sobre del límit... Poden cotitzar i pagar IRPF.'],
+  ['Grup de cotització', 'Categoria (de l\'1 a l\'11) segons la teva feina. Determina la base mínima de cotització.'],
+  ['Conveni col·lectiu', 'Acord entre empreses i sindicats del teu sector que fixa salaris, pagues, jornada i pluses.'],
+  ['SMI', 'Salari Mínim Interprofessional. Cap treballador a jornada completa pot cobrar menys.'],
+  ['Embargament', 'Descompte ordenat per un jutjat o administració per pagar un deute. Té límits segons el salari.'],
+];

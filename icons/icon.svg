@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Xoriguer Papers</title>
+  <defs>
+    <linearGradient id="ala" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff5a00"/>
+      <stop offset=".55" stop-color="#ff8a1f"/>
+      <stop offset="1" stop-color="#ffb43a"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffa53a"/>
+      <stop offset="1" stop-color="#ff6a00"/>
+    </linearGradient>
+    <radialGradient id="fons" cx=".5" cy=".35" r=".75">
+      <stop offset="0" stop-color="#1c1c1e"/>
+      <stop offset="1" stop-color="#050505"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#fons)"/>
+
+  <!-- Falcó: ala en ploms escombrats -->
+  <g fill="url(#ala)">
+    <path d="M58 46 C168 46 290 86 372 140 L352 170 C266 112 160 74 58 46 Z"/>
+    <path d="M92 100 C192 98 296 124 362 164 L344 188 C272 150 186 124 92 100 Z"/>
+    <path d="M130 152 C216 146 300 164 352 188 L336 208 C282 188 216 172 130 152 Z"/>
+    <path d="M182 200 C248 192 306 198 342 210 L328 226 C290 218 240 212 182 200 Z"/>
+  </g>
+  <!-- Línia del coll -->
+  <path d="M232 230 C280 236 312 230 338 214" fill="none" stroke="#f5efe6" stroke-width="7" stroke-linecap="round"/>
+  <!-- Cap -->
+  <path d="M322 210 C332 170 362 134 404 128 C430 124 450 134 460 150 C474 156 480 172 470 188 C464 176 456 170 446 170 C434 178 418 182 402 184 C378 188 352 200 334 220 Z"
+        fill="#111112" stroke="#f5efe6" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M446 170 C456 170 464 176 470 188" fill="none" stroke="#f5efe6" stroke-width="9" stroke-linecap="round"/>
+  <path d="M396 144 Q414 134 432 142" fill="none" stroke="#f5efe6" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="418" cy="152" rx="7" ry="5.5" fill="#ff8a1f"/>
+  <circle cx="419" cy="152" r="3" fill="#111112"/>
+
+  <!-- Nòmina -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <path d="M182 262 H300 L346 308 V444 A14 14 0 0 1 332 458 H182 A14 14 0 0 1 168 444 V276 A14 14 0 0 1 182 262 Z"
+          fill="none" stroke="url(#paper)" stroke-width="18"/>
+    <path d="M298 264 V296 A12 12 0 0 0 310 308 H344" fill="none" stroke="url(#paper)" stroke-width="14"/>
+    <path d="M200 318 H272" stroke="#f5efe6" stroke-width="12"/>
+    <path d="M200 352 H246 M272 352 H314" stroke="#f5efe6" stroke-width="10" opacity=".7"/>
+    <path d="M200 382 H258 M282 382 H314" stroke="#f5efe6" stroke-width="10" opacity=".7"/>
+    <path d="M200 420 H246" stroke="#ff8a1f" stroke-width="12"/>
+  </g>
+  <text x="318" y="434" text-anchor="end" font-family="Segoe UI, Roboto, Arial, sans-serif" font-weight="900" font-size="40" fill="#ff8a1f">€</text>
+</svg>

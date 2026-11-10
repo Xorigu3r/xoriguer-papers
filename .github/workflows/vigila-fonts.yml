@@ -1,0 +1,42 @@
+name: Vigila fonts oficials (BOE i AEAT)
+
+on:
+  schedule:
+    - cron: '30 7 * * *'   # cada dia a les 7:30 UTC (el BOE surt a primera hora)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  vigila:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Revisa BOE i AEAT
+        id: vigila
+        run: node scripts/vigila-fonts.mjs
+
+      - name: Obre una incidència si hi ha novetats
+        if: steps.vigila.outputs.novetats == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create dades --color 1f6f5c --description "Revisió de dades oficials" 2>/dev/null || true
+          gh issue create \
+            --title "Revisar dades oficials ($(date +%d/%m/%Y))" \
+            --label dades \
+            --body-file scripts/avis.md
+
+      - name: Desa l'estat de la vigilància
+        run: |
+          git config user.name "vigilant-fonts"
+          git config user.email "vigilant-fonts@users.noreply.github.com"
+          git add scripts/estat-vigilancia.json
+          git diff --cached --quiet || git commit -m "Vigilància de fonts: estat actualitzat"
+          git push

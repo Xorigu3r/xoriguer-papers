@@ -1,0 +1,95 @@
+{
+  "any": 2026,
+  "revisat": "2026-11-10",
+  "fonts": [
+    { "nom": "Orden PJC/297/2026 (cotització 2026), BOE-A-2026-7296", "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296" },
+    { "nom": "Real Decreto 126/2026 (SMI 2026), BOE-A-2026-3815", "url": "https://www.boe.es/eli/es/rd/2026/02/18/126/con" },
+    { "nom": "AEAT: Algoritme de càlcul del tipus de retenció 2026 (a partir del 10/09/2026)", "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/Algoritmo%20Retenciones-2026_10sept.pdf" }
+  ],
+  "smi": {
+    "mensual14pagues": 1221.0,
+    "anual": 17094.0
+  },
+  "basesCotitzacio": {
+    "maximaMensual": 5101.2,
+    "minimaPerGrup": {
+      "1": 1989.3, "2": 1649.7, "3": 1435.2, "4": 1424.4, "5": 1424.4, "6": 1424.4, "7": 1424.4,
+      "8": 1424.4, "9": 1424.4, "10": 1424.4, "11": 1424.4
+    },
+    "nota": "Grups 8-11 cotitzen per dies (47,48 €/dia mínim); aquí es fa servir l'equivalent mensual de 30 dies."
+  },
+  "grupsCotitzacio": {
+    "1": "Enginyers i llicenciats",
+    "2": "Enginyers tècnics, perits i ajudants titulats",
+    "3": "Caps administratius i de taller",
+    "4": "Ajudants no titulats",
+    "5": "Oficials administratius",
+    "6": "Subalterns",
+    "7": "Auxiliars administratius",
+    "8": "Oficials de primera i segona",
+    "9": "Oficials de tercera i especialistes",
+    "10": "Peons",
+    "11": "Menors de 18 anys"
+  },
+  "cotitzacioTreballador": {
+    "contingenciesComunes": 4.70,
+    "aturIndefinit": 1.55,
+    "aturTemporal": 1.60,
+    "formacioProfessional": 0.10,
+    "mei": 0.15,
+    "horesExtresForcaMajor": 2.00,
+    "horesExtresAltres": 4.70
+  },
+  "cotitzacioSolidaritat": {
+    "trams": [
+      { "fins": 5611.32, "treballador": 0.19 },
+      { "fins": 7651.80, "treballador": 0.21 },
+      { "fins": null, "treballador": 0.24 }
+    ]
+  },
+  "irpf": {
+    "escalaRetencions": [
+      { "fins": 12450, "tipus": 19 },
+      { "fins": 20200, "tipus": 24 },
+      { "fins": 35200, "tipus": 30 },
+      { "fins": 60000, "tipus": 37 },
+      { "fins": 300000, "tipus": 45 },
+      { "fins": null, "tipus": 47 }
+    ],
+    "despeses": {
+      "general": 2000,
+      "mobilitatGeografica": 2000,
+      "discapacitat33a65": 3500,
+      "discapacitat65oMobilitat": 7750
+    },
+    "reduccioRendimentsTreball": {
+      "llindarBaix": 14852,
+      "importMaxim": 7302,
+      "tram1Fins": 17673.52,
+      "tram1Factor": 1.75,
+      "tram2Import": 2364.34,
+      "tram2Fins": 19747.5,
+      "tram2Factor": 1.14
+    },
+    "reduccioMesDeDosDescendents": 600,
+    "minimPersonal": 5550,
+    "minimMajor65": 1150,
+    "minimMajor75": 1400,
+    "minimDescendents": [2400, 2700, 4000, 4500],
+    "minimDescendentMenor3": 2800,
+    "minimAscendent65": 1150,
+    "minimAscendent75": 1400,
+    "minimDiscapacitat33a65": 3000,
+    "minimDiscapacitat65": 9000,
+    "despesesAssistencia": 3000,
+    "incrementMinimAnualitats": 1980,
+    "llindarsExempcio": {
+      "1": [null, 17644, 18694],
+      "2": [17197, 18130, 19262],
+      "3": [15876, 16342, 16867]
+    },
+    "limitQuota": { "retribucioFins": 35200, "percentatge": 43 },
+    "prestecHabitatge": { "retribucioMenorDe": 33007.20, "percentatge": 2 },
+    "minimContracteMenysUnAny": 2
+  }
+}

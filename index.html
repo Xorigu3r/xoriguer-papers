@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Xoriguer Papers</title>
+  <meta name="description" content="Entén els teus papers: la nòmina explicada línia a línia. Tot es calcula al teu dispositiu.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <a href="#/" class="marca" aria-label="Xoriguer Papers, inici"><img src="icons/icon.svg" alt="" width="38" height="38"><span class="marca-text"><span class="marca-nom"><b>X</b>ORIGUER</span><span class="marca-sub">PAPERS</span></span></a>
+    <button id="btn-instalar" class="boto secundari" hidden>Instal·lar</button>
+  </header>
+
+  <div class="disseny">
+    <nav class="menu" aria-label="Seccions">
+      <a href="#/" data-ruta="/">Inici</a>
+      <a href="#/nomina" data-ruta="/nomina">Comprovar nòmina</a>
+      <a href="#/simular" data-ruta="/simular">Simular</a>
+      <a href="#/glossari" data-ruta="/glossari">Glossari</a>
+      <span class="menu-desactivat" title="Properament">Factura de llum</span>
+    </nav>
+
+    <div class="contingut">
+      <div id="avis-dades" class="avis alerta avis-global" role="status" hidden></div>
+      <main id="vista" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <footer class="peu">
+    <p>🔒 Tot es calcula al teu dispositiu. No s'envia cap dada a cap servidor.</p>
+    <p>Resultats orientatius. Si tens dubtes, consulta la gestoria o un sindicat. <span id="any-dades"></span></p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

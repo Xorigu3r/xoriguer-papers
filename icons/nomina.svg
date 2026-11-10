@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Nòmina</title>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa53a"/><stop offset="1" stop-color="#ff6a00"/></linearGradient></defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 6h24l12 12v36a4 4 0 0 1-4 4H15a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z" stroke="url(#g)" stroke-width="4"/>
+    <path d="M38 7v8a3 3 0 0 0 3 3h9" stroke="url(#g)" stroke-width="3"/>
+    <path d="M18 25h16" stroke="#f5efe6" stroke-width="3.5"/>
+    <path d="M18 33h10M33 33h10M18 40h12M35 40h8" stroke="#f5efe6" stroke-width="3" opacity=".7"/>
+    <path d="M18 49h10" stroke="#ff8a1f" stroke-width="3.5"/>
+  </g>
+  <text x="44" y="52" text-anchor="end" font-family="Segoe UI, Roboto, Arial, sans-serif" font-weight="900" font-size="10" fill="#ff8a1f">€</text>
+</svg>
