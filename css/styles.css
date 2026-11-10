@@ -305,3 +305,17 @@ details.linia p { margin: .35rem 0 .2rem; font-size: .85rem; color: var(--text-s
 .np-pop-detall { margin: .4rem 0; padding: .4rem .6rem; background: var(--primari-suau); border-radius: 8px; font-size: .88rem; }
 .np-pop-nav { display: flex; justify-content: space-between; gap: .5rem; margin-top: .6rem; }
 .np-pop-nav .boto:disabled { opacity: .4; cursor: default; }
+
+/* ---------- Llegir la nòmina en PDF ---------- */
+.llegir-pdf, .lectura-pdf { margin: 0 0 1.5rem; padding: 1rem 1.1rem; background: var(--superficie); border: 1px dashed var(--primari); border-radius: var(--radi); }
+.lectura-pdf { border-style: solid; scroll-margin-top: 80px; }
+.llegir-pdf h2, .lectura-pdf h2 { margin: 0 0 .3rem; font-size: 1.1rem; }
+.llegir-pdf .boto { display: inline-block; cursor: pointer; }
+.llegir-pdf:focus-within label.boto { outline: 2px solid var(--primari); outline-offset: 2px; }
+.amagat { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; clip-path: inset(50%); }
+.pdf-contrasenya { margin-top: .8rem; }
+.pdf-contrasenya label { display: block; font-size: .92rem; margin-bottom: .35rem; }
+.fila-clau { display: flex; gap: .5rem; }
+.fila-clau input { flex: 1; min-width: 0; padding: .55rem .7rem; border-radius: 8px; border: 1px solid var(--vora); background: var(--fons); color: var(--text); font: inherit; }
+.lectura-pdf .taula { max-width: 34rem; }
+.text-pdf { max-height: 16rem; overflow: auto; padding: .6rem; background: var(--fons); border-radius: 8px; font-size: .75rem; white-space: pre; }

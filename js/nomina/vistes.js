@@ -3,6 +3,7 @@ import { seccioModel145, llegeixLlistes145, enllacaModel145 } from './model145.j
 import { explicacions as expl, glossari as gloss } from './textos.js';
 import { glossari as glossLlum } from '../llum/textos.js';
 import { t } from '../i18n.js';
+import { seccioPdf, enllacaPdf, resumLectura, CAMPS_PDF } from './vista-pdf.js';
 
 // ---------- Estat del formulari (memòria; opcionalment al dispositiu) ----------
 const CLAU = 'pdc.nomina.v1';
@@ -20,6 +21,7 @@ function llegeixDesat() {
   try { const v = localStorage.getItem(CLAU); return v ? JSON.parse(v) : null; } catch { return null; }
 }
 let estat = { ...PER_DEFECTE, ...(llegeixDesat() ?? {}) };
+let lectura = null; // última nòmina llegida d'un PDF (només en memòria)
 
 function desa() {
   try {
@@ -91,6 +93,7 @@ export function vistaNomina(el, dades) {
   el.append(h(`
     <h1>${t('Comprovar la nòmina')}</h1>
     <p class="intro">${t("Copia les xifres de la teva nòmina d'un mes normal (sense paga extra). Els resultats s'actualitzen mentre escrius.")} <a href="#/nomina/exemple">${t('No saps on és cada cosa? Mira la nòmina explicada.')}</a></p>
+    ${lectura ? resumLectura(lectura, dades) : seccioPdf()}
     <div class="dues-columnes">
       <form id="form-nomina" class="formulari" autocomplete="off" onsubmit="return false">
         <fieldset>
@@ -167,7 +170,26 @@ export function vistaNomina(el, dades) {
   form.addEventListener('input', actualitza);
   form.addEventListener('change', actualitza);
   enllacaModel145(form, actualitza);
+  const tornaAPintar = () => { el.innerHTML = ''; vistaNomina(el, dades); };
+  if (lectura) {
+    el.querySelector('#treu-lectura').addEventListener('click', () => {
+      for (const c of CAMPS_PDF) estat[c] = PER_DEFECTE[c];
+      lectura = null;
+      desa();
+      tornaAPintar();
+    });
+  } else {
+    enllacaPdf(el, (l) => {
+      for (const c of CAMPS_PDF) estat[c] = PER_DEFECTE[c];
+      for (const [k, v] of Object.entries(l.valors)) estat[k] = typeof v === 'number' ? String(v) : v;
+      lectura = l;
+      desa();
+      tornaAPintar();
+      el.querySelector('.lectura-pdf')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
   el.querySelector('#esborrar').addEventListener('click', () => {
+    lectura = null;
     estat = { ...PER_DEFECTE };
     desa();
     el.innerHTML = '';
